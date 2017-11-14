@@ -1,1 +1,4 @@
-# JM_MV_CNN
+# mvcnn
+Video Classification Using H.264 Motion Compensation Parameters
+
+.

@@ -1,0 +1,80 @@
+#!/bin/bash
+clear
+echo "########################################################"
+echo "using modified JM to encode and decode (from yuv to 264)"
+echo "########################################################"
+cd JM_MVX_NoTexture
+#make
+cd bin
+rm mv.bin
+./lencod.exe -f encoder_CO.cfg -p InputFile="./vid/box.yuv" -p OutputFile="./vid/Boxing_NoTexture.264"
+./ldecod.exe -f decoder_CO.cfg -p InputFile="./vid/Boxing_NoTexture.264" -p OutputFile="./vid/Boxing_decoded.yuv"
+rm ../../mbmap/mv.bin
+cp mv.bin ../../mbmap/
+cp ./vid/Boxing_NoTexture.264 ../../../../UCLResearch/MVX/
+cd ../../mbmap
+rm jmmv.bin
+./mbmap -h 240 -w 320 -o jmmv_NoTexture.bin mv.bin
+cp ./jmmv_NoText.bin ../../../UCLResearch/MVX/
+cd ..
+
+echo "########################################################"
+echo "using Original JM to encode and decode (from yuv to 264)"
+echo "########################################################"
+cd JM_MVX
+#make
+cd bin
+rm mv.bin
+cp ../../JM_MVX_NoTexture/bin/encoder_CO.cfg .
+./lencod.exe -f encoder_CO.cfg -p InputFile="./vid/box.yuv" -p OutputFile="./vid/Boxing.264"
+./ldecod.exe -f decoder_CO.cfg -p InputFile="./vid/Boxing.264" -p OutputFile="./vid/Boxing_decoded.yuv"
+rm ../../mbmap/mv.bin
+cp mv.bin ../../mbmap/
+cp ./vid/Boxing.264 ../../../../UCLResearch/MVX/
+cd ../../mbmap
+rm jmmv.bin
+./mbmap -h 240 -w 320 -o jmmv.bin mv.bin
+cp ./jmmv.bin ../../../UCLResearch/MVX/
+cd ..
+
+echo "##################################################################"
+echo "using ffmpeg to encode and original JM to decode (from yuv to 264)"
+echo "##################################################################"
+cd JM_MVX
+cd bin
+rm mv.bin
+cd vid
+rm Boxing_ffmpeg.264
+ffmpeg -f rawvideo -pix_fmt yuv420p -s:v 320x240 -r 25 -i box.yuv -refs 6 -bf 0 -c:v libx264 -f rawvideo Boxing_ffmpeg.264
+cd ..
+./ldecod.exe -f decoder_CO.cfg -p InputFile="./vid/Boxing_ffmpeg.264" -p OutputFile="./vid/Boxing_ffmpeg_decoded.yuv"
+rm ../../mbmap/mv.bin
+cp mv.bin ../../mbmap/
+cp ./vid/Boxing_ffmpeg.264 ../../../../UCLResearch/MVX/
+cd ../../mbmap
+rm jmmv_ffmpeg.bin
+./mbmap -h 240 -w 320 -o jmmv_ffmpeg.bin mv.bin
+cp ./jmmv_ffmpeg.bin ../../../UCLResearch/MVX/
+cd ..
+
+echo "##################################################################"
+echo "using ffmpeg to encode and original JM to decode (from avi to 264)"
+echo "##################################################################"
+cd JM_MVX
+cd bin
+rm mv.bin
+cd vid
+#ffmpeg -y -i box.avi -c:v libx264rgb -b:v 1M -bf 0 -r 25 Boxing_ffmpeg_avi.264
+#ffmpeg -y -i box.avi -c:v libx264 -b:v 1M -bf 0 -r 25 Boxing_ffmpeg_avi.mp4
+#ffmpeg -y -i box.avi -c:v libx264rgb -b:v 1M -bf 0 -pix_fmt rgb24  -r 25  Boxing_ffmpeg_avi.mp4
+cd ..
+./ldecod.exe -f decoder_CO.cfg -p InputFile="./vid/Boxing_ffmpeg_avi.264" -p OutputFile="./vid/Boxing_ffmpeg_decoded_avi.yuv"
+rm ../../mbmap/mv.bin
+cp mv.bin ../../mbmap/
+cp ./vid/Boxing_ffmpeg.264 ../../../../UCLResearch/MVX/
+cd ../../mbmap
+rm jmmv_ffmpeg_avi.bin
+./mbmap -h 240 -w 320 -o jmmv_ffmpeg_avi.bin mv.bin
+cp ./jmmv_ffmpeg_avi.bin ../../../UCLResearch/MVX/
+cd ..
+
