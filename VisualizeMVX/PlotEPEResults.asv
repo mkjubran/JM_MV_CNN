@@ -1,0 +1,65 @@
+%%Plot QP VS EPE for MVs encoded using ffmpeg
+close all;clear all;clc;
+QP=                      [0         4       8       12      16      20      24      28      32      36      40      44      48      51];
+
+%%%% ffmpeg without MV spatial interpolation
+EPE_ffmpeg_AVLib_NoSIntp=[28.4943 46.1100 45.7318 48.1527 46.2297 44.3601 44.5958 47.2596 47.8053 50.3505 50.2759 54.8483 57.2138 56.8193];
+
+EPE_ffmpeg_QP0_NoSIntp=  [0       35.5032 36.3150 39.7727 39.2278 39.1080 41.1547 46.8148 49.5198 53.9024 56.4155 62.5853 66.5311 67.0246];
+
+EPE_ffmpeg_QP12_NoSIntp=[39.7727  29.4480 30.2702    0    32.1625 34.5721 37.5942 46.9916 52.3612 58.2469 63.9350 72.1056 77.3596 80.3706];
+
+EPE_ffmpeg_QP51_NoSIntp=[67.0246  78.9078 79.3456 80.3706 78.3123 77.26 78.3065 77.4421 77.1218 76.0733 71.0843 68.5904 71.0843 0];
+
+%%%% ffmpeg without MV spatial interpolation
+EPE_ffmpeg_AVLib_MVSIntp=[];
+
+EPE_ffmpeg_QP0_MVSIntp=  [];
+
+EPE_ffmpeg_QP12_MVSIntp= [];
+
+EPE_ffmpeg_QP51_MVSIntp= [];
+
+
+%%%% JM without MV spatial interpolation
+EPE_JM_AVLib_NoSIntp=[54.3332 54.5662 55.4712 55.7598 49.2186 46.8573 45.6674 41.4843 39.6879 38.0567 37.0528 34.6724 29.4739 24.7882];
+
+EPE_JM_QP0_NoSIntp=  [0       23.5412 27.8678 31.9972 35.6638 40.6449 46.8219 50.3983 56.1701 60.6523 64.2271 66.4370 64.6390 62.3511];
+
+EPE_JM_QP12_NoSIntp= [31.9972 33.5907 32.4416 0       37.6895 43.8978 47.5829 51.3905 56.7561 61.8640 66.2178 68.4827 66.3952 63.7726];
+
+EPE_JM_QP51_NoSIntp= [62.3511 63.1985 63.6814 63.7726 57.7733 55.7892 54.4625 49.9981 46.5659 44.2620 41.6759 36.2784 27.9774 0];
+
+
+%%%% ffmpeg without MV spatial interpolation
+EPE_JM_AVLib_MVSIntp=[59.8979 60.0349 61.3386 61.5942 54.7735 52.6651 51.1620 47.0293 45.1994       27.2022];
+
+EPE_JM_QP0_MVSIntp=  [0       27.9198 33.0515 37.9323 41.9253 48.0689 54.8066 59.0676 64.9660       69.8839];
+
+EPE_JM_QP12_MVSIntp= [37.9323 39.1497 38.0940 0       43.8922 51.4667 55.5073 60.3693 66.2299             71.4300];
+
+EPE_JM_QP51_MVSIntp= [69.8839 70.4679 71.2529 71.4300 65.0213 63.2956 61.6709 57.0182 53.5329 51.0595 47.8477 41.7741 31.8285 0];
+
+figure()
+plot(QP,EPE_ffmpeg_AVLib_NoSIntp,'-r*');
+hold on;
+plot(QP,EPE_ffmpeg_QP0_NoSIntp,'-b>');
+plot(QP,EPE_ffmpeg_QP12_NoSIntp,'-kd');
+plot(QP,EPE_ffmpeg_QP51_NoSIntp,'-go');
+title('EPE for MV extracted from ffmpeg coded Videos) without MV spatial Interpolation');
+xlabel('QP values');
+ylabel('EPE');
+grid on;
+legend('AVLib MVs (used to train 3DCNN)','ffmpeg MV with QP=0 (Lossless)','ffmpeg MV with QP=12','ffmpeg MV with QP=51');
+
+figure()
+plot(QP,EPE_JM_AVLib_NoSIntp,'-r*');
+hold on;
+plot(QP,EPE_JM_QP0_NoSIntp,'-b>');
+plot(QP,EPE_JM_QP12_NoSIntp,'-kd');
+plot(QP,EPE_JM_QP51_NoSIntp,'-go');
+title('EPE for MV extracted from JM coded Videos) without MV spatial Interpolation');
+xlabel('QP values');
+ylabel('EPE');
+grid on;
+legend('AVLib MVs (used to train 3DCNN)','JM MV with QP=0 (Lossless)','JM MV with QP=12','JM MV with QP=51');
