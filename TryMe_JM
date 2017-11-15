@@ -1,80 +1,23 @@
 #!/bin/bash
 clear
 
-#%%%%%%%%%% deleting .264 videos from previous run
-rm ./JM_MVX/bin/vid/Boxing_JM_Option1.264
-rm ./JM_MVX/bin/vid/Boxing_JM_Option2.264
-rm ./JM_MVX/bin/vid/Boxing_JM_Option3.264
-rm ./JM_MVX/bin/vid/Boxing_JM_Option4.264
-rm ./JM_MVX/bin/vid/Boxing_JM_Option5.264
+QP_List='0 4 8 12 16 20 24 28 32 36 40 44 48 51'
+MVSR_List='16 32 64'
+SpatialInterPolation_List='0 1'
+MVResolution_List='8 16'
+InputFile="box.yuv"
 
-
-#%%%%%%%%%% deleting estracted MVs from previous run
-rm ./mbmap/mv_Option1.bin
-rm ./mbmap/mv_Option2.bin
-rm ./mbmap/mv_Option3.bin
-rm ./mbmap/mv_Option4.bin
-rm ./mbmap/mv_Option5.bin
-
-rm ./mbmap_NoInterpolation/mv_Option1.bin
-rm ./mbmap_NoInterpolation/mv_Option2.bin
-rm ./mbmap_NoInterpolation/mv_Option3.bin
-rm ./mbmap_NoInterpolation/mv_Option4.bin
-rm ./mbmap_NoInterpolation/mv_Option5.bin
-
-#%%%%%%%%%% encode and decode using Original JM to encode and decode (from yuv to 264)
-#%%%%%% Option 1
-cd ./JM_MVX/bin
-rm mv.bin
-./lencod.exe -f encoder_Option1.cfg -p InputFile="./vid/box.yuv" -p OutputFile="./vid/Boxing_JM_Option1.264"
-./ldecod.exe -f decoder_CO.cfg -p InputFile="./vid/Boxing_JM_Option1.264" -p OutputFile="./vid/Boxing_decoded.yuv"
-cp mv.bin ../../mbmap/mv_Option1_Dec.bin
-mv mv.bin ../../mbmap_NoInterpolation/mv_Option1_Dec.bin
-
-#%%%%%% Option 2
-./lencod.exe -f encoder_Option2.cfg -p InputFile="./vid/box.yuv" -p OutputFile="./vid/Boxing_JM_Option2.264"
-./ldecod.exe -f decoder_CO.cfg -p InputFile="./vid/Boxing_JM_Option2.264" -p OutputFile="./vid/Boxing_decoded.yuv"
-cp mv.bin ../../mbmap/mv_Option2_Dec.bin
-mv mv.bin ../../mbmap_NoInterpolation/mv_Option2_Dec.bin
-
-#%%%%%% Option 3
-./lencod.exe -f encoder_Option3.cfg -p InputFile="./vid/box.yuv" -p OutputFile="./vid/Boxing_JM_Option3.264"
-./ldecod.exe -f decoder_CO.cfg -p InputFile="./vid/Boxing_JM_Option3.264" -p OutputFile="./vid/Boxing_decoded.yuv"
-cp mv.bin ../../mbmap/mv_Option3_Dec.bin
-mv mv.bin ../../mbmap_NoInterpolation/mv_Option3_Dec.bin
-
-#%%%%%% Option 4
-./lencod.exe -f encoder_Option4.cfg -p InputFile="./vid/box.yuv" -p OutputFile="./vid/Boxing_JM_Option4.264"
-./ldecod.exe -f decoder_CO.cfg -p InputFile="./vid/Boxing_JM_Option4.264" -p OutputFile="./vid/Boxing_decoded.yuv"
-cp mv.bin ../../mbmap/mv_Option4_Dec.bin
-mv mv.bin ../../mbmap_NoInterpolation/mv_Option4_Dec.bin
-
-#%%%%%% Option 5
-./lencod.exe -f encoder_Option5.cfg -p InputFile="./vid/box.yuv" -p OutputFile="./vid/Boxing_JM_Option5.264"
-./ldecod.exe -f decoder_CO.cfg -p InputFile="./vid/Boxing_JM_Option5.264" -p OutputFile="./vid/Boxing_decoded.yuv"
-cp mv.bin ../../mbmap/mv_Option5_Dec.bin
-mv mv.bin ../../mbmap_NoInterpolation/mv_Option5_Dec.bin
-
-#%%%%%%%%%% deleteing old processed MV files
-cd ../../mbmap
-#cd ../../mbmap_NoInterpolation
-rm mv_Option1.bin
-rm mv_Option2.bin
-rm mv_Option3.bin
-rm mv_Option4.bin
-rm mv_Option5.bin
-
-#%%%%%%%%%% Extracting the MVs
-./mbmap -h 240 -w 320 -o mv_Option1.bin mv_Option1_Dec.bin
-./mbmap -h 240 -w 320 -o mv_Option2.bin mv_Option2_Dec.bin
-./mbmap -h 240 -w 320 -o mv_Option3.bin mv_Option3_Dec.bin
-./mbmap -h 240 -w 320 -o mv_Option4.bin mv_Option4_Dec.bin
-./mbmap -h 240 -w 320 -o mv_Option5.bin mv_Option5_Dec.bin
-
-
-#%%%%%%%%%% copying the MVs to the directory to be processed by matlab
-mv ./mv_Option1.bin ../../../UCLResearch/MVX/
-mv ./mv_Option2.bin ../../../UCLResearch/MVX/
-mv ./mv_Option3.bin ../../../UCLResearch/MVX/
-mv ./mv_Option4.bin ../../../UCLResearch/MVX/
-mv ./mv_Option5.bin ../../../UCLResearch/MVX/
+for MVResolution in $MVResolution_List
+do
+ for SpatialInterPolation in $SpatialInterPolation_List
+ do 
+  for MVSR in $MVSR_List
+  do
+   for QP in $QP_List
+   do
+    echo QP=$QP , Search Range=$MVSR, Spatial Interpolation=$SpatialInterPolation, MV Resolution=$MVResolution
+    ./TryMe_JM_Function $QP $MVSR  $SpatialInterPolation $MVResolution $InputFile
+   done
+  done
+ done
+done

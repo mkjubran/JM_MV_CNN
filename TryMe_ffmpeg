@@ -85,11 +85,11 @@ rm mv_Option5.bin
 ./mbmap -h 240 -w 320 -o mv_Option5.bin mv_Option5_Dec.bin
 
 #%%%%%%%%%% copying the MVs to the directory to be processed by matlab
-mv ./mv_Option1.bin ../../../UCLResearch/MVX/
-mv ./mv_Option2.bin ../../../UCLResearch/MVX/
-mv ./mv_Option3.bin ../../../UCLResearch/MVX/
-mv ./mv_Option4.bin ../../../UCLResearch/MVX/
-mv ./mv_Option5.bin ../../../UCLResearch/MVX/
+mv ./mv_Option1.bin ../../../UCLResearch/VisualizeMVX/
+mv ./mv_Option2.bin ../../../UCLResearch/VisualizeMVX/
+mv ./mv_Option3.bin ../../../UCLResearch/VisualizeMVX/
+mv ./mv_Option4.bin ../../../UCLResearch/VisualizeMVX/
+mv ./mv_Option5.bin ../../../UCLResearch/VisualizeMVX/
 cd ..
 
 
