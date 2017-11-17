@@ -29,7 +29,7 @@ cp mv.bin ../../mbmap/mv_Option1_Dec.bin
 mv mv.bin ../../mbmap_NoInterpolation/mv_Option1_Dec.bin
 
 #%%%%%%%%%% deleteing old processed MV files
-if [ $3 ]
+if [ $3 -eq 1 ]
 then
  cd ../../mbmap
  echo ../../mbmap
