@@ -4,12 +4,14 @@ clear
 TTSet="01";
 
 #%%%%%%%%%% Store input Parameters
-enc_cfg=$1
+enc_cfg=$1		#JM encoder configuration file
 QPISlice=$2 		#value [0 - 51]
 QPPSlice=$2 		#value [0 - 51]
 SearchRange=$3		#value [16,32,64]
 mbmapXxX=$4		#value [8,16]
 TraingSet=$5		#value [0:Train Set,1: Test Set]
+
+NumFrame=10		#Number of frames to be encoded
 
 echo %#######################################################################
 echo MV QP=$1 , Search Range=$2, MV Resolution=$3, TrainingList=$4
@@ -27,7 +29,7 @@ IFS=$'\n' read -d '' -r -a Lines < $InputFileList  #Read the list of test/traini
 
 cnt1=0;
 cnt2=1;
-while [ $cnt1 -le ${#Lines[@]} ] 
+while [ $cnt1 -le ${#Lines[@]} ]  && [ $cnt1 -le 300 ] 
 do
 Line=${Lines[$cnt1]}
 
@@ -70,7 +72,7 @@ fi
 
 #%%%%%%%%%% Encoding FileName from .yuv to .264 using JM encoder"
 rm ./vid/JMEncodedVideo.264
-./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=1000 -p OutputFile="./vid/JMEncodedVideo.264"
+./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p OutputFile="./vid/JMEncodedVideo.264"
 
 if [ ! -e "./vid/JMEncodedVideo.264" ] ; then
 echo "Problem with encoding [$AbsFileName] yuv to 264, ./vid/JMEncodedVideo.264 is not generated"
