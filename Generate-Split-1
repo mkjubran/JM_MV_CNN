@@ -11,7 +11,7 @@ SearchRange=$3		#value [16,32,64]
 mbmapXxX=$4		#value [8,16]
 TraingSet=$5		#value [0:Train Set,1: Test Set]
 
-NumFrame=10		#Number of frames to be encoded
+NumFrame=1000		#Number of frames to be encoded
 
 echo %#######################################################################
 echo MV QP=$1 , Search Range=$2, MV Resolution=$3, TrainingList=$4
@@ -27,9 +27,9 @@ fi
 
 IFS=$'\n' read -d '' -r -a Lines < $InputFileList  #Read the list of test/training video files
 
-cnt1=0;
-cnt2=1;
-while [ $cnt1 -le ${#Lines[@]} ]  && [ $cnt1 -le 300 ] 
+cnt1=1;
+cnt2=1; #increment 
+while [ $cnt1 -le ${#Lines[@]} ]  && [ $cnt1 -le 200 ] 
 do
 Line=${Lines[$cnt1]}
 
@@ -71,6 +71,11 @@ break
 fi
 
 #%%%%%%%%%% Encoding FileName from .yuv to .264 using JM encoder"
+if [ ! -e "$enc_cfg" ] ; then
+echo "$enc_cfg" "doesn't exit"
+break
+fi
+
 rm ./vid/JMEncodedVideo.264
 ./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p OutputFile="./vid/JMEncodedVideo.264"
 
@@ -114,13 +119,13 @@ then
  then
  mkdir ../../JMMV/JMMV_Training$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX
  fi
-mv JMMV_mbmap.bin ../../JMMV/JMMV_Training$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX/JMMV_$FileNameP1.bin
+mv JMMV_mbmap.bin ../../JMMV/JMMV_Training$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX/JMMV_$FileNameP1.bin
 else
  if ! [ -d ../../JMMV/JMMV_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX ]
  then
  mkdir ../../JMMV/JMMV_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX
  fi
-mv JMMV_mbmap.bin ../../JMMV/JMMV$TTSet"_"Test_QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX/JMMV_$FileNameP1.bin
+mv JMMV_mbmap.bin ../../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX/JMMV_$FileNameP1.bin
 fi
 
 
