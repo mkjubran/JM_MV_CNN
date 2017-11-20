@@ -69,7 +69,7 @@ fi
 
 #%%%%%%%%%% Encoding FileName from .yuv to .264 using JM encoder"
 rm ./vid/JMEncodedVideo.264
-./lencod.exe -f encoder.cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=10 -p OutputFile="./vid/JMEncodedVideo.264"
+./lencod.exe -f encoder.cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=1000 -p OutputFile="./vid/JMEncodedVideo.264"
 
 if [ ! -e "./vid/JMEncodedVideo.264" ] ; then
 echo "Problem with encoding [$AbsFileName] yuv to 264, ./vid/JMEncodedVideo.264 is not generated"
