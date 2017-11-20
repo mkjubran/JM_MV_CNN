@@ -17,9 +17,9 @@ echo %#######################################################################
 #%%%%%%%%%% Read file list and identify the location of the video and the MV output file name
 if [ $TraingSet -eq 1 ]
 then
-InputFileList="../ucfTrainTestlist/trainlist"$TTSet".txt"
+InputFileList="../../ucfTrainTestlist/trainlist"$TTSet".txt"
 else
-InputFileList="../ucfTrainTestlist/testlist"$TTSet".txt"
+InputFileList="../../ucfTrainTestlist/testlist"$TTSet".txt"
 fi
 
 IFS=$'\n' read -d '' -r -a Lines < $InputFileList  #Read the list of test/training video files
@@ -54,13 +54,13 @@ echo $FileNameP2
 #%%%%%%%%%% Transcoding FileName from .avi to .yuv and store the output yuv file in ./vid/"
 pwd
 cd JM_MVX_NoTexture/bin
-if [ ! -e "../../../UCF-101/$AbsFileName" ] ; then
-echo "../../../UCF-101/$AbsFileName" "doesn't exit"
+if [ ! -e "../../../../UCF-101/$AbsFileName" ] ; then
+echo "../../../../UCF-101/$AbsFileName" "doesn't exit"
 break
 fi
 
 rm ./vid/JMInputVideo.yuv
-ffmpeg -i '../../../UCF-101/'$AbsFileName -vcodec rawvideo -pix_fmt yuv420p './vid/JMInputVideo.yuv'
+ffmpeg -i '../../../../UCF-101/'$AbsFileName -vcodec rawvideo -pix_fmt yuv420p './vid/JMInputVideo.yuv'
 
 if [ ! -e "./vid/JMInputVideo.yuv" ] ; then
 echo "Problem with ffmpeg while converting $AbsFileName to yuv, ./vid/JMInputVideo.yuv is not generated"
