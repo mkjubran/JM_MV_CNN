@@ -9,13 +9,10 @@ QPISlice=$2 		#value [0 - 51]
 QPPSlice=$2 		#value [0 - 51]
 SearchRange=$3		#value [16,32,64]
 mbmapXxX=$4		#value [8,16]
-NumFrame=$5		#Number of frames to be encoded
+NumVideos=$5		#Number of Video files to be encoded
 TraingSet=$6		#value [0:Train Set,1: Test Set]
 
-
-echo %#######################################################################
-echo MV QP=$1 , Search Range=$2, MV Resolution=$3, TrainingList=$4
-echo %#######################################################################
+NumFrame=1000
 
 #%%%%%%%%%% Read file list and identify the location of the video and the MV output file name
 if [ $TraingSet -eq 1 ]
@@ -27,10 +24,24 @@ fi
 
 IFS=$'\n' read -d '' -r -a Lines < $InputFileList  #Read the list of test/training video files
 
+if [ $NumVideos -le ${#Lines[@]} ]
+then
+TotalVideos=$NumVideos
+else
+TotalVideos=${#Lines[@]}
+fi
+
+#%%%%%%%%%% Hidder General Info
+echo %#######################################################################
+echo "JM config file=$enc_cfg , QP=$QPISlice, Search Range=$SearchRange, MV Resolution=$mbmapXxX"
+echo "Number of Videos = $TotalVideos, Video Set=$TraingSet (0:Test, 1:Train)"
+echo %#######################################################################
+
 cnt1=1;
 cnt2=1; #increment 
-while [ $cnt1 -le ${#Lines[@]} ]  && [ $cnt1 -le 200 ] 
+while [ $cnt1 -le $TotalVideos ]
 do
+
 Line=${Lines[$cnt1]}
 
 var0=$(echo $Line | awk -F".avi" '{print $1,$2}')   
@@ -47,15 +58,10 @@ set -- $var2 "$@"
 FileNameP1=$1
 FileNameP2=$2
 
-
-echo $AbsFileName
-echo $Directory
-echo $FileName
-echo $FileNameP1
-echo $FileNameP2
+#%%%%%%%%%% Show Processing Progress to keep track
+echo "Processing video file number $cnt1 out of $TotalVideos ($AbsFileName)"
 
 #%%%%%%%%%% Transcoding FileName from .avi to .yuv and store the output yuv file in ./vid/"
-pwd
 cd JM_MVX_NoTexture/bin
 if [ ! -e "../../../../UCF-101/$AbsFileName" ] ; then
 echo "../../../../UCF-101/$AbsFileName" "doesn't exit"
@@ -63,7 +69,7 @@ break
 fi
 
 rm ./vid/JMInputVideo.yuv
-ffmpeg -i '../../../../UCF-101/'$AbsFileName -vcodec rawvideo -pix_fmt yuv420p './vid/JMInputVideo.yuv'
+ffmpeg -loglevel panic -i '../../../../UCF-101/'$AbsFileName -vcodec rawvideo -pix_fmt yuv420p './vid/JMInputVideo.yuv' > /dev/null
 
 if [ ! -e "./vid/JMInputVideo.yuv" ] ; then
 echo "Problem with ffmpeg while converting $AbsFileName to yuv, ./vid/JMInputVideo.yuv is not generated"
@@ -77,7 +83,7 @@ break
 fi
 
 rm ./vid/JMEncodedVideo.264
-./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p OutputFile="./vid/JMEncodedVideo.264"
+./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p OutputFile="./vid/JMEncodedVideo.264" > /dev/null
 
 if [ ! -e "./vid/JMEncodedVideo.264" ] ; then
 echo "Problem with encoding [$AbsFileName] yuv to 264, ./vid/JMEncodedVideo.264 is not generated"
@@ -85,9 +91,9 @@ break
 fi
 
 #%%%%%%%%%% Decoding FileName from .264 to .yuv using JM decoder"
-rm mv.bin
+rm mv.bin > /dev/null 2>&1
 rm ./vid/JMDecodedVideo.yuv
-./ldecod.exe -f decoder.cfg -p InputFile="./vid/JMEncodedVideo.264" -p OutputFile="./vid/JMDecodedVideo.yuv"
+./ldecod.exe -f decoder.cfg -p InputFile="./vid/JMEncodedVideo.264" -p OutputFile="./vid/JMDecodedVideo.yuv" > /dev/null
 
 if [ ! -e "./vid/JMDecodedVideo.yuv" ] ; then
 echo "Problem with decoding [$AbsFileName].264 to yuv, ./vid/JMDecodedVideo.yuv is not generated"
@@ -96,15 +102,13 @@ fi
 
 #%%%%%%%%%% Mapping MV to Macroblocks (make grid) and make them in a format suitable as input to classifier (Training/Testing)"
 rm ../../mbmap/mv_dec.bin
-mv mv.bin ../../mbmap/mv_dec.bin
+mv -f mv.bin ../../mbmap/mv_dec.bin
 cd ../../mbmap
 if [ $mbmapXxX -eq 8 ]
 then
-./mbmap -h 240 -w 320 -$3 -o JMMV_mbmap.bin mv_dec.bin
-echo "./mbmap -h 240 -w 320 "-$3" -o JMMV_mbmap.bin mv_dec.bin"
+./mbmap -h 240 -w 320 -$3 -o JMMV_mbmap.bin mv_dec.bin > /dev/null
 else
- ./mbmap -h 240 -w 320 -o JMMV_mbmap.bin mv_dec.bin
-echo "./mbmap -h 240 -w 320 -o JMMV_mbmap.bin mv_dec.bin"
+ ./mbmap -h 240 -w 320 -o JMMV_mbmap.bin mv_dec.bin > /dev/null
 fi
 
 if [ ! -e "./JMMV_mbmap.bin" ] ; then
@@ -126,18 +130,17 @@ then
  then
  mkdir ../../JMMV/JMMV_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX
  fi
-mv JMMV_mbmap.bin ../../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX/JMMV_$FileNameP1.bin
+mv -f JMMV_mbmap.bin ../../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX/JMMV_$FileNameP1.bin
 else
  if ! [ -d ../../JMMV/JMMV_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX ]
  then
  mkdir ../../JMMV/JMMV_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX
  fi
-mv JMMV_mbmap.bin ../../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX/JMMV_$FileNameP1.bin
+mv -f JMMV_mbmap.bin ../../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX/JMMV_$FileNameP1.bin
 fi
 
 
 cd ..
-
 cnt1=$((cnt1 + cnt2))
-done < "$InputFileList"   #until end of FileNameList
+done < "$InputFileList"   #until end of FileNameList or NumVideos
 
