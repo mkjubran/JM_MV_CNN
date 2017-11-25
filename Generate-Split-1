@@ -1,21 +1,72 @@
 #!/bin/bash
 clear
 
-TTSet="01";
+# Set initial default parameters
+enc_cfg=encoder.cfg		#JM encoder configuration file
+QPISlice=25 			#value [0 - 51]
+QPPSlice=25 			#value [0 - 51]
+SearchRange=16			#value [16,32,64]
+mbmapXxX=8			#value [8,16]
+TrainSet=0			#value [0:Train Set,1: Test Set]
+TTSet=01			#UCF-101 Split Set [01 02 03]
+IndexFirstVideo=1		#Index of first video to be encoded [1,2, .... ]
+NumVideos=1			#Number of Video files to be encoded
+StrComment=""			#Comment to be added at the end of the directory that will be made (if doesn't exist) to contain the output MVs
 
-#%%%%%%%%%% Store input Parameters
-enc_cfg=$1		#JM encoder configuration file
-QPISlice=$2 		#value [0 - 51]
-QPPSlice=$2 		#value [0 - 51]
-SearchRange=$3		#value [16,32,64]
-mbmapXxX=$4		#value [8,16]
-NumVideos=$5		#Number of Video files to be encoded
-TraingSet=$6		#value [0:Train Set,1: Test Set]
+## Parsing Command Line Parameters
+## cmd exmaple: ./Generate-Split-1 -ecfg=encoder.cfg -qp=25 -sr=16 -res=4 -tset=1 sset=01 -ifvid=1 -nvid=5 -strcom=Option1
+for i in "$@"
+do
+case $i in
+    -ecfg=*|--ecfg=*)
+    enc_cfg="${i#*=}"
+    shift
+    ;;
+    -qp=*|--qp=*)
+    QPISlice="${i#*=}"
+    QPPSlice="${i#*=}"
+    shift
+    ;;
+    -sr=*|--sr=*)
+    SearchRange="${i#*=}"
+    shift
+    ;;
+    -res=*|--res=*)
+    mbmapXxX="${i#*=}"
+    shift
+    ;;
+    -tset=*|--tset=*)
+    TrainSet="${i#*=}"
+    shift
+    ;;
+   -sset=*|--sset=*)
+    TTSet="${i#*=}"
+    shift
+    ;;
+    -ifvid=*|--ifvid=*)
+    IndexFirstVideo="${i#*=}"
+    shift
+    ;;
+    -nvid=*|--nvid=*)
+    NumVideos="${i#*=}"
+    shift
+    ;;
+   -strcom=*|--strcom=*)
+    StrComment="_${i#*=}"
+    shift
+    ;;
+    *)
+          # unknown option
+    ;;
+esac
+done
+#### End Parsing Command Line Parameters
 
+# Hardcoded Parameters
 NumFrame=1000
 
 #%%%%%%%%%% Read file list and identify the location of the video and the MV output file name
-if [ $TraingSet -eq 1 ]
+if [ $TrainSet -eq 1 ]
 then
 InputFileList="../../ucfTrainTestlist/trainlist"$TTSet".txt"
 else
@@ -32,12 +83,12 @@ TotalVideos=${#Lines[@]}
 fi
 
 #%%%%%%%%%% Hidder General Info
-echo %#######################################################################
-echo "JM config file=$enc_cfg , QP=$QPISlice, Search Range=$SearchRange, MV Resolution=$mbmapXxX"
-echo "Number of Videos = $TotalVideos, Video Set=$TraingSet (0:Test, 1:Train)"
-echo %#######################################################################
+echo %########################################################################################
+echo "JM config file=${enc_cfg} , QP=$QPISlice, Search Range=$SearchRange, MV Resolution=$mbmapXxX, UCF-101 Split Set = $TTSet"
+echo "Train/Test Set=$TrainSet (0:Test, 1:Train), Index of First Video = $IndexFirstVideo, Number of Videos = $TotalVideos"  
+echo %########################################################################################
 
-cnt1=1;
+cnt1=$IndexFirstVideo;
 cnt2=1; #increment 
 while [ $cnt1 -le $TotalVideos ]
 do
@@ -104,7 +155,7 @@ fi
 rm ../../mbmap/mv_dec.bin
 mv -f mv.bin ../../mbmap/mv_dec.bin
 cd ../../mbmap
-if [ $mbmapXxX -eq 8 ]
+if [ $mbmapXxX -eq 8 ] || [ $mbmapXxX -eq 4 ];
 then
 ./mbmap -h 240 -w 320 -$3 -o JMMV_mbmap.bin mv_dec.bin > /dev/null
 else
@@ -124,19 +175,19 @@ mkdir ../../JMMV
 fi
 
 
-if [ $TraingSet -eq 1 ]
+if [ $TrainSet -eq 1 ]
 then
- if ! [ -d ../../JMMV/JMMV_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX ]
+ if ! [ -d ../../JMMV/JMMV_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
  then
- mkdir ../../JMMV/JMMV_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX
+ mkdir ../../JMMV/JMMV_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment
  fi
-mv -f JMMV_mbmap.bin ../../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX/JMMV_$FileNameP1.bin
+mv -f JMMV_mbmap.bin ../../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin
 else
- if ! [ -d ../../JMMV/JMMV_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX ]
+ if ! [ -d ../../JMMV/JMMV_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
  then
- mkdir ../../JMMV/JMMV_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX
+ mkdir ../../JMMV/JMMV_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment
  fi
-mv -f JMMV_mbmap.bin ../../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX/JMMV_$FileNameP1.bin
+mv -f JMMV_mbmap.bin ../../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin
 fi
 
 

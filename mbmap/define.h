@@ -38,7 +38,7 @@ using namespace std;
 // using namespace boost::assign ;
 
 extern int FRAME_WIDTH ; extern int FRAME_HEIGHT ;
-extern bool GRID_8X8, SHOW_HELP ;
+extern bool GRID_8X8, GRID_4X4, SHOW_HELP ;
 extern const char *INPUT_PATH, *OUTPUT_PATH ;
 
 struct JMacroBlock 
@@ -56,9 +56,9 @@ signed char mv[MV_CHANNELS][MB_FRAME_DIM][MB_FRAME_DIM] ;
 int  pts ;  int index ; char type ;  
 int width ; int height ; 
 
-void smooth();
 void setup(vector<JMacroBlock>& ) ; 
 void print(FILE*) ; 
+void smooth() ; 
 public:
 Frame() ; 
 
