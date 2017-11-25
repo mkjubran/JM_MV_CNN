@@ -64,6 +64,7 @@ done
 
 # Hardcoded Parameters
 NumFrame=1000
+IndexLastVideo=$((IndexFirstVideo + NumVideos - 1))
 
 #%%%%%%%%%% Read file list and identify the location of the video and the MV output file name
 if [ $SetType = "train" ] || [ $SetType = "Train" ];
@@ -82,22 +83,20 @@ fi
 
 IFS=$'\n' read -d '' -r -a Lines < $InputFileList  #Read the list of test/training video files
 
-if [ $NumVideos -le ${#Lines[@]} ]
+if [ $IndexLastVideo -gt ${#Lines[@]} ]
 then
-TotalVideos=$NumVideos
-else
-TotalVideos=${#Lines[@]}
+IndexLastVideo=${#Lines[@]}
 fi
 
 #%%%%%%%%%% Hidder General Info
 echo %########################################################################################
-echo "JM config file=${enc_cfg} , QP=$QPISlice, Search Range=$SearchRange, MV Resolution=$mbmapXxX, UCF-101 Split Set = $TTSet"
+echo "JM config file=${enc_cfg}, QP=$QPISlice, Search Range=$SearchRange, MV Resolution=$mbmapXxX, UCF-101 Split Set = $TTSet"
 echo "Set type (train/test)=$SetType, Index of First Video = $IndexFirstVideo, Number of Videos = $TotalVideos"  
 echo %########################################################################################
 
 cnt1=$IndexFirstVideo;
 cnt2=1; #increment 
-while [ $cnt1 -le $TotalVideos ]
+while [ $cnt1 -le $IndexLastVideo ]
 do
 
 Line=${Lines[$cnt1]}
@@ -117,7 +116,9 @@ FileNameP1=$1
 FileNameP2=$2
 
 #%%%%%%%%%% Show Processing Progress to keep track
-echo "Processing video file number $cnt1 out of $TotalVideos ($AbsFileName)"
+PerCompleted1=$((100*(cnt1-IndexFirstVideo+1)/(IndexLastVideo-IndexFirstVideo+1)))
+PerCompleted2=$((100*(cnt1-IndexFirstVideo+1)%(IndexLastVideo-IndexFirstVideo+1)))
+echo "Processing video file number $cnt1  [$IndexFirstVideo - $IndexLastVideo] ($AbsFileName) ... $PerCompleted1.$PerCompleted2% completed"
 
 #%%%%%%%%%% Transcoding FileName from .avi to .yuv and store the output yuv file in ./vid/"
 cd JM_MVX_NoTexture/bin
@@ -182,7 +183,7 @@ mkdir ../../JMMV
 fi
 
 
-if [ $SetType -eq "train" ]
+if [ $SetType = "train" ]
 then
  if ! [ -d ../../JMMV/JMMV_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
  then
