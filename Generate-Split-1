@@ -87,6 +87,7 @@ if [ $IndexLastVideo -gt ${#Lines[@]} ]
 then
 IndexLastVideo=${#Lines[@]}
 fi
+TotalVideos=$((IndexLastVideo-IndexFirstVideo+1))
 
 #%%%%%%%%%% Hidder General Info
 echo %########################################################################################
