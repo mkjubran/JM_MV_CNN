@@ -7,7 +7,7 @@ QPISlice=25 			#value [0 - 51]
 QPPSlice=25 			#value [0 - 51]
 SearchRange=16			#value [16,32,64]
 mbmapXxX=8			#value [8,16]
-TrainSet=0			#value [0:Train Set,1: Test Set]
+SetType=0			#value [0:Train Set,1: Test Set]
 TTSet=01			#UCF-101 Split Set [01 02 03]
 IndexFirstVideo=1		#Index of first video to be encoded [1,2, .... ]
 NumVideos=1			#Number of Video files to be encoded
@@ -35,8 +35,8 @@ case $i in
     mbmapXxX="${i#*=}"
     shift
     ;;
-    -tset=*|--tset=*)
-    TrainSet="${i#*=}"
+    -settype=*|--settype=*)
+    SetType="${i#*=}"
     shift
     ;;
    -sset=*|--sset=*)
@@ -66,11 +66,18 @@ done
 NumFrame=1000
 
 #%%%%%%%%%% Read file list and identify the location of the video and the MV output file name
-if [ $TrainSet -eq 1 ]
+if [ $SetType = "train" ] || [ $SetType = "Train" ];
 then
+SetType="train"
 InputFileList="../../ucfTrainTestlist/trainlist"$TTSet".txt"
-else
+else if [ $SetType = "test" ] || [ $SetType = "Test" ];
+then
+SetType="test"
 InputFileList="../../ucfTrainTestlist/testlist"$TTSet".txt"
+else
+echo "$SetType is not recognized as set type. It must be train or test"
+exit 1
+fi
 fi
 
 IFS=$'\n' read -d '' -r -a Lines < $InputFileList  #Read the list of test/training video files
@@ -85,7 +92,7 @@ fi
 #%%%%%%%%%% Hidder General Info
 echo %########################################################################################
 echo "JM config file=${enc_cfg} , QP=$QPISlice, Search Range=$SearchRange, MV Resolution=$mbmapXxX, UCF-101 Split Set = $TTSet"
-echo "Train/Test Set=$TrainSet (0:Test, 1:Train), Index of First Video = $IndexFirstVideo, Number of Videos = $TotalVideos"  
+echo "Set type (train/test)=$SetType, Index of First Video = $IndexFirstVideo, Number of Videos = $TotalVideos"  
 echo %########################################################################################
 
 cnt1=$IndexFirstVideo;
@@ -175,7 +182,7 @@ mkdir ../../JMMV
 fi
 
 
-if [ $TrainSet -eq 1 ]
+if [ $SetType -eq "train" ]
 then
  if ! [ -d ../../JMMV/JMMV_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
  then
