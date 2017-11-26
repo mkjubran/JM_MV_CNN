@@ -11,13 +11,13 @@ mbmapXxX=8			#value [8,16]
 SetType="test"			#value [0:Train Set,1: Test Set]
 TTSet=01			#UCF-101 Split Set [01 02 03]
 IndexFirstVideo=1		#Index of first video to be encoded [1,2, .... ]
-NumVideos=1000			#Number of Video files to be encoded
+NumVideos=16			#Number of Video files to be encoded
 StrComment="Opt3a"		#Comment to be added at the end of the directory that will be made (if doesn't exist) to contain the output MVs
 #%%%%%
 N=8; 				#Number of Parallel Processes 
 #%%%%
 
-cnt=IndexFirstVideo;
+cnt=$IndexFirstVideo;
 Inc=$((NumVideos/N));
 Inc2=$((NumVideos%N));
 if [ $Inc2 -gt 0 ];
