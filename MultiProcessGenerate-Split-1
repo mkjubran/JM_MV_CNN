@@ -11,8 +11,13 @@ mbmapXxX=8			#value [8,16]
 SetType="train"			#value [0:Train Set,1: Test Set]
 TTSet=01			#UCF-101 Split Set [01 02 03]
 IndexFirstVideo=1		#Index of first video to be encoded [1,2, .... ]
+<<<<<<< HEAD
 NumVideos=10000			#Number of Video files to be encoded
 StrComment="Opt1a"		#Comment to be added at the end of the directory that will be made (if doesn't exist) to contain the output MVs
+=======
+NumVideos=16			#Number of Video files to be encoded
+StrComment="Opt3a"		#Comment to be added at the end of the directory that will be made (if doesn't exist) to contain the output MVs
+>>>>>>> 01f9026fe6bba7bbb5cf9e75bfc0a3cbf2dd4c51
 #%%%%%
 N=24; 				#Number of Parallel Processes 
 #%%%%

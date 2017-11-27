@@ -1,10 +1,10 @@
 #!/bin/bash
 clear
 
-QP_List='0 4 8 12 16 20 24 28 32 36 40 44 48 51'
-MVSR_List='16 32 64'
-SpatialInterPolation_List='0 1'
-MVResolution_List='8 16'
+QP_List='20 35'
+MVSR_List='16'
+SpatialInterPolation_List='1'
+MVResolution_List='4'
 InputFile="box.yuv"
 
 for MVResolution in $MVResolution_List

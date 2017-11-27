@@ -8,6 +8,8 @@ void Helper::parse_options(int argc, const char* argv[])
                         SHOW_HELP = true;
                 else if(strcmp(argv[i], "-8") == 0)
                         GRID_8X8 = true ;
+                else if(strcmp(argv[i], "-4") == 0)
+                        GRID_4X4 = true ;
 		else if (strcmp(argv[i], "-w") == 0)
                         FRAME_WIDTH = atoi(argv[++i]);
 		else if (strcmp(argv[i], "-h") == 0)
