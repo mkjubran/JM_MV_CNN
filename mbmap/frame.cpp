@@ -12,7 +12,7 @@ void Frame::smooth(){
 	size_t mbsize  = GRID_8X8 ? 8:16  ;
 	mbsize         = GRID_4X4 ? 4:mbsize  ;
 
-	size_t smooth_it  = GRID_4X4 ? 2:1  ;
+	size_t smooth_it  = GRID_4X4 ? 1:1  ;
 
         int ydim = (height/mbsize)*2 ; int xdim  = width/mbsize ;
 

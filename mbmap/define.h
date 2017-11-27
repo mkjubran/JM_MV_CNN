@@ -7,14 +7,14 @@
 #include <cstdlib>
 #include <ctime>
 #include <stdint.h>
-#include <cmath>
-#include <cstring>
+#include<cmath>
 
 // Label Reader ..
 #include <sstream>
 #include <string>
 #include <fstream>
 #include <map>
+#include <cstring>
 
 // Boost incs:
 // #include <boost/assign/list_inserter.hpp> // for 'insert()'
