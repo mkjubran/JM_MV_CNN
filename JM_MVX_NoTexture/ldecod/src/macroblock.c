@@ -1093,7 +1093,7 @@ static void read_motion_info_from_NAL_p_slice (Macroblock *currMB)
   // LIST_0 Motion vectors
   readMBMotionVectors (&currSE, dP, currMB, LIST_0, step_h0, step_v0);
 
-// Write MV tuples  by Abbas and then corrected by Jubran
+// Write MV tuples  by Abbas and then midified by Jubran
 
 int dx_ = (int) currMB->mvd[0][0][0][0] ;
 int dy_ = (int) currMB->mvd[0][0][0][1] ;
@@ -1106,19 +1106,24 @@ int j4B=0;
 int x_MaxB=4;
 int y_MaxB=4;
 
+/*No need for checking MB type
 if (currMB->mb_type == 1) //P16x16
 { y_MaxB=4; x_MaxB=4;} 
 
 if (currMB->mb_type == 2) //P16x8
-{y_MaxB=4; x_MaxB=2;}
+{y_MaxB=4; x_MaxB=4;}
 
 if (currMB->mb_type == 3) //P8x16
-{y_MaxB=2; x_MaxB=4;}
+{y_MaxB=4; x_MaxB=4;}
 
 if (currMB->mb_type == 8) //P8x8
-{y_MaxB=2; x_MaxB=2;}
+{y_MaxB=4; x_MaxB=4;}
+*/
 
-//printf("Jubran MV  Frame = %3d, MBType = %2d ...\n",p_Vid->frame_no, currMB->mb_type);
+//  FILE *mdetailedvout = fopen("mv_detailed.txt","a+b") ; //Jubran: uncommment to generate an mvdetailed.txt file that describe the ontent of mv.bin in text file
+//  fprintf(mdetailedvout,"Frame = %3d, MB: %3d, MBType = %2d, ...\n",p_Vid->frame_no,currMB->mbAddrX,currMB->mb_type) ; //Jubran: uncommment to generate an mvdetailed.txt file that describe the ontent of mv.bin in text file
+
+
 for(j4B = 0; j4B < y_MaxB; ++j4B)
 {
  for(i4B = 0; i4B < x_MaxB; ++i4B)
@@ -1138,17 +1143,22 @@ for(j4B = 0; j4B < y_MaxB; ++j4B)
   fwrite(&(dy_), sizeof(int), 1, mvout) ;
   fclose (mvout) ;
 
-//printf("(%2d,%2d)[%2d,%2d] ",x_,y_,dx_,dy_);
+
+//  fprintf(mdetailedvout,"(%2d,%2d)[%2d,%2d] ",x_,y_,dx_,dy_); //Jubran: uncommment to generate an mvdetailed.txt file that describe the ontent of mv.bin in text file
+
  }
-//printf("\n");
+
+//  fprintf(mdetailedvout,"\n") ; //Jubran: uncommment to generate an mvdetailed.txt file that describe the ontent of mv.bin in text file
 }
 
-//printf("Jubran MV  ============================================\n");
+//  fprintf(mdetailedvout,"============================================\n") ; //Jubran: uncommment to generate an mvdetailed.txt file that describe the ontent of mv.bin in text file
+//  fclose (mdetailedvout) ; //Jubran: uncommment to generate an mvdetailed.txt file that describe the ontent of mv.bin in text file
+
 
 // fwrite(&(currMB->mvd[0][0][0]), sizeof(int), 1, mvout) ;
 // fwrite(&(currMB->mvd[0][0][1]), sizeof(int), 1, mvout) ;
 
-// end of adding by Abbas and corrected by Jubran
+// end of adding by Abbas and modified by Jubran
 
   // record reference picture Ids for deblocking decisions  
   for(j4 = 0; j4 < 4;++j4)
