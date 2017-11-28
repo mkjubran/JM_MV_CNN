@@ -1064,6 +1064,8 @@ static void read_motion_info_from_NAL_p_slice (Macroblock *currMB)
   int step_v0         = BLOCK_STEP [partmode][1];
 
   int j4;
+
+
   StorablePicture *dec_picture = currSlice->dec_picture;
   PicMotionParams *mv_info = NULL;
 
@@ -1091,26 +1093,62 @@ static void read_motion_info_from_NAL_p_slice (Macroblock *currMB)
   // LIST_0 Motion vectors
   readMBMotionVectors (&currSE, dP, currMB, LIST_0, step_h0, step_v0);
 
-// Write MV tuples  by Abbas
+// Write MV tuples  by Abbas and then corrected by Jubran
+/*
 int dx_ = (int) currMB->mvd[0][0][0][0] ;
 int dy_ = (int) currMB->mvd[0][0][0][1] ;
 
 int x_ = currMB->block_x * 4 ;
 int y_ = currMB->block_y * 4 ;
 
-FILE *mvout = fopen("mv.bin","a+b") ;
-fwrite(&(p_Vid->frame_no), sizeof(int), 1, mvout) ;
-fwrite(&(currMB->mb_type), sizeof(int), 1, mvout) ;
-fwrite(&(x_), sizeof(int), 1, mvout) ;
-fwrite(&(y_), sizeof(int), 1, mvout) ;
-fwrite(&(dx_), sizeof(int), 1, mvout) ;
-fwrite(&(dy_), sizeof(int), 1, mvout) ;
+int i4B=0;
+int j4B=0;
+int x_MaxB=4;
+int y_MaxB=4;
+
+if (currMB->mb_type == 1) //P16x16
+{ y_MaxB=4; x_MaxB=4;} 
+
+if (currMB->mb_type == 2) //P16x8
+{y_MaxB=4; x_MaxB=2;}
+
+if (currMB->mb_type == 3) //P8x16
+{y_MaxB=2; x_MaxB=4;}
+
+if (currMB->mb_type == 8) //P8x8
+{y_MaxB=2; x_MaxB=2;}
+
+//printf("Jubran MV  Frame = %3d, MBType = %2d ...\n",p_Vid->frame_no, currMB->mb_type);
+for(j4B = 0; j4B < y_MaxB; ++j4B)
+{
+ for(i4B = 0; i4B < x_MaxB; ++i4B)
+  {
+  dx_ = (int) currMB->mvd[0][j4B][i4B][0] ;
+  dy_ = (int) currMB->mvd[0][j4B][i4B][1] ;
+
+  x_ = (currMB->block_x + i4B) * 4 ;
+  y_ = (currMB->block_y + j4B) * 4 ;
+
+  FILE *mvout = fopen("mv.bin","a+b") ;
+  fwrite(&(p_Vid->frame_no), sizeof(int), 1, mvout) ;
+  fwrite(&(currMB->mb_type), sizeof(int), 1, mvout) ;
+  fwrite(&(x_), sizeof(int), 1, mvout) ;
+  fwrite(&(y_), sizeof(int), 1, mvout) ;
+  fwrite(&(dx_), sizeof(int), 1, mvout) ;
+  fwrite(&(dy_), sizeof(int), 1, mvout) ;
+  fclose (mvout) ;
+
+//printf("(%2d,%2d)[%2d,%2d] ",x_,y_,dx_,dy_);
+ }
+//printf("\n");
+}
+
+//printf("Jubran MV  ============================================\n");
 
 // fwrite(&(currMB->mvd[0][0][0]), sizeof(int), 1, mvout) ;
 // fwrite(&(currMB->mvd[0][0][1]), sizeof(int), 1, mvout) ;
-fclose (mvout) ;
-
-// end of adding by Abbas
+*/
+// end of adding by Abbas and corrected by Jubran
 
   // record reference picture Ids for deblocking decisions  
   for(j4 = 0; j4 < 4;++j4)
