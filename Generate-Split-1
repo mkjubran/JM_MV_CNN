@@ -100,7 +100,7 @@ while [ $cnt1 -le $IndexLastVideo ]
 do
 Line=${Lines[$cnt1]}
 
-var0=$(echo $Line | awk -F".avi" '{print $1,$2}')   
+var0=$(echo $Line | awk -F".avi " '{print $1,$2}')   
 set -- $var0 "$@"
 AbsFileName=$1".avi"
 

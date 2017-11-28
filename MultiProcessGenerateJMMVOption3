@@ -38,7 +38,7 @@ while [ $i -le $N ]
 do
 if [ $i -eq $N ]
 then
-Inc=$((NumVideos - cnt + 1));
+Inc=$((NumVideos + IndexFirstVideo - cnt));
 fi
 cd ./JM_MV_CNN$i
 ./Generate-Split-1 -ecfg=$enc_cfg -qp=$QPISlice -sr=$SearchRange -res=$mbmapXxX -settype=$SetType -sset=$TTSet -ifvid=$cnt -nvid=$Inc -strcom=$StrComment &
