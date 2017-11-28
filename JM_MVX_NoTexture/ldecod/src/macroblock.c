@@ -1094,7 +1094,7 @@ static void read_motion_info_from_NAL_p_slice (Macroblock *currMB)
   readMBMotionVectors (&currSE, dP, currMB, LIST_0, step_h0, step_v0);
 
 // Write MV tuples  by Abbas and then corrected by Jubran
-/*
+
 int dx_ = (int) currMB->mvd[0][0][0][0] ;
 int dy_ = (int) currMB->mvd[0][0][0][1] ;
 
@@ -1147,7 +1147,7 @@ for(j4B = 0; j4B < y_MaxB; ++j4B)
 
 // fwrite(&(currMB->mvd[0][0][0]), sizeof(int), 1, mvout) ;
 // fwrite(&(currMB->mvd[0][0][1]), sizeof(int), 1, mvout) ;
-*/
+
 // end of adding by Abbas and corrected by Jubran
 
   // record reference picture Ids for deblocking decisions  
