@@ -1,0 +1,9 @@
+#!/bin/bash
+awk -F '/' '{print $2}' ../../ucfTrainTestlist/trainlist01.txt > mergedfiles1.txt
+cat -n mergedfiles1.txt > mergedfiles2.txt
+paste mergedfiles1.txt mergedfiles2.txt > mergedfiles.txt
+ls ../JMMV/JMMV_Train01_QP51_MVSR16_MVRes8_Opt1a/ > list_file.txt
+awk -F '_' '{print $2"_"$3"_"$4"_"$5}' ./list_file.txt >> mergedfiles.txt
+sort -k 1,1 -s mergedfiles.txt > mergedfiles_sorted.txt
+ 
+
