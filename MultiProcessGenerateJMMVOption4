@@ -14,7 +14,7 @@ IndexFirstVideo=1		#Index of first video to be encoded [1,2, .... ]
 NumVideos=10000			#Number of Video files to be encoded
 StrComment="Opt4a"		#Comment to be added at the end of the directory that will be made (if doesn't exist) to contain the output MVs
 #%%%%%
-N=24; 				#Number of Parallel Processes 
+N=1; 				#Number of Parallel Processes 
 #%%%%
 
 cnt=$IndexFirstVideo;

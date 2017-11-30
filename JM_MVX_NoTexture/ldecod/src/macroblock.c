@@ -1117,7 +1117,7 @@ if (currMB->mb_type == 3) //P8x16
 {y_MaxB=4; x_MaxB=4;}
 
 if (currMB->mb_type == 8) //P8x8
-{y_MaxB=4; x_MaxB=4;}
+{y_MaxB=2; x_MaxB=2;}
 */
 
 //  FILE *mdetailedvout = fopen("mv_detailed.txt","a+b") ; //Jubran: uncommment to generate an mvdetailed.txt file that describe the ontent of mv.bin in text file
