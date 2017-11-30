@@ -29,6 +29,16 @@ fi
 i=1;
 while [ $i -le $N ]
 do 
+if [ -e JM_MV_CNN$i ]
+then
+rm -rf JM_MV_CNN$i
+fi
+if [ -e JM_MV_CNN$i ]
+then
+echo "cann't remove JM_MV_CNN$i to start a fresh coding, try to remove it and then run the code again"
+exit -1; 
+fi
+
 cp -R JM_MV_CNN/ JM_MV_CNN$i &
 i=$((i+1));
 done
