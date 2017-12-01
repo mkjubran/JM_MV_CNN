@@ -67,3 +67,6 @@ rm -rf JM_MV_CNN$i &
 i=$((i+1));
 done
 wait
+
+#To rename all JMMV*.bin file names to rgb24*.bin file names. This must be executed inside the MVs directory 
+#find . -name '*.bin' -exec bash -c ' mv $0 ${0/\JMMV/rgb24}' {} \;
