@@ -23,7 +23,7 @@ rm ./mbmap_NoInterpolation/mv_Option1.bin
 #%%%%%% Option 1
 cd ./JM_MVX_NoTexture/bin
 rm mv.bin
-./lencod.exe -f encoder_option4.cfg -p InputFile="./vid/"$5 -p QPISlice=$1 -p QPPSlice=$1 -p SearchRange=$2 -p OutputFile="./vid/Boxing_JM_Option1.264"
+./lencod.exe -f encoder_option4.cfg -p InputFile="./vid/"$5 -p QPISlice=$1 -p QPPSlice=$1 -p SearchRange=$2 -p Verbose=0 -p OutputFile="./vid/Boxing_JM_Option1.264"
 ./ldecod.exe -f decoder.cfg -p InputFile="./vid/Boxing_JM_Option1.264" -p OutputFile="./vid/Boxing_decoded.yuv"
 cp mv.bin ../../mbmap/mv_Option1_Dec.bin
 mv mv.bin ../../mbmap_NoInterpolation/mv_Option1_Dec.bin
@@ -34,8 +34,11 @@ then
  cd ../../mbmap
  echo ../../mbmap
 else
- cd ../../mbmap_NoInterpolation
- echo ../../mbmap_NoInterpolation
+echo "Not interested for noInterpolation of MVs";
+exit -1;
+
+# cd ../../mbmap_NoInterpolation
+# echo ../../mbmap_NoInterpolation
 fi
 
 rm mv_Option1.bin

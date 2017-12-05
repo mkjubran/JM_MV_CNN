@@ -14,6 +14,11 @@ int main(int argc, const char* argv[])
 	Helper::parse_options(argc, argv);
 
 	int mbsize ; mbsize = GRID_8X8 ? 8:16 ;
+	
+	//echo start execution	
+	int MBGrid = GRID_4X4 ? 4:mbsize;
+        fprintf(stdout ,"\n\nMabing MV of JM software to %dx%d grid\n",MBGrid, MBGrid) ;
+
 
 	// Read MVs and load into vector
 	JMacroBlock mb ; vector<JMacroBlock> mbvec ;
@@ -33,26 +38,26 @@ int main(int argc, const char* argv[])
         if (buffer == NULL) {fputs ("Memory error",stderr); exit (2);}
         
         // copy the file into the buffer:
-	fprintf(stdout ,"lSize: %d, lSize/sizeof(int): %d\n", lSize, lSize/sizeof(int)) ;
+	//fprintf(stdout ,"lSize: %d, lSize/sizeof(int): %d\n", lSize, lSize/sizeof(int)) ;
         result = fread(buffer,sizeof(int),lSize/sizeof(int),pFile); fclose (pFile) ;
         if (result != lSize/sizeof(int)) {fputs ("Reading Error\n",stderr); exit (3);}
 
 	Frame frame ; int last_frame = 0 ;
 	frame.width = FRAME_WIDTH ; frame.height = FRAME_HEIGHT ;
 	frame.type = 0 ;
-
+	
 	FILE  *fout = fopen(OUTPUT_PATH, "wb") ;
 	int   *buffer_ = buffer ; int bytes_read = 0 ;
 	while(bytes_read < (lSize - sizeof(JMacroBlock) - 1)){
 		mbvec.clear() ;
-		bool same_frame = true ; 
+		bool same_frame = true ;
+		fprintf(stdout, "."); 
 		while(same_frame){
 		mb.frame = *(buffer_++) ; mb.type = *(buffer_++) ;
 		mb.x     = *(buffer_++) ; mb.y    = *(buffer_++) ;
 		mb.dx    = *(buffer_++) ; mb.dy   = *(buffer_++) ;
-		fprintf(stdout ,"total_bytes: %d, bytes_read: %d\n", lSize, bytes_read) ; 
-		fprintf(stdout ,"frame: %d, type: %d, x:%d, y:%d, dx: %d. dy:%d\n", 
-					   mb.frame, mb.type, mb.x, mb.y, mb.dx, mb.dy) ; 
+		//fprintf(stdout ,"total_bytes: %d, bytes_read: %d\n", lSize, bytes_read) ; 
+		//fprintf(stdout ,"frame: %d, type: %d, x:%d, y:%d, dx: %d. dy:%d\n", mb.frame, mb.type, mb.x, mb.y, mb.dx, mb.dy) ; 
 
 		same_frame = (mb.frame == last_frame) ;
 		bytes_read = bytes_read + sizeof(JMacroBlock) ; 
@@ -65,7 +70,8 @@ int main(int argc, const char* argv[])
 	}
 
         free (buffer) ; fclose(fout) ;
-        return 0;
+        fprintf(stdout,"\n\n");
+	return 0;
 } // main
 
    

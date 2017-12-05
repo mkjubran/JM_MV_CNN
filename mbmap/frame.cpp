@@ -100,7 +100,7 @@ void Frame::print(FILE *fout)
         fwrite(&xdim, sizeof(int), 1, fout) ;
         fwrite(&ydim, sizeof(int), 1, fout) ;
         fwrite(&type, sizeof(char), 1, fout) ;
-	fprintf(stdout, "Printing frame -- xdim: %d, ydim: %d, width: %d, height: %d\n", xdim, ydim, width, FRAME_HEIGHT) ;
+//	fprintf(stdout, "Printing frame -- xdim: %d, ydim: %d, width: %d, height: %d\n", xdim, ydim, width, FRAME_HEIGHT) ;
 	for (int i = 0 ; i < ydim/2 ; i++){
         	fwrite(&mv[0][i], sizeof(signed char), xdim , fout) ; }
 

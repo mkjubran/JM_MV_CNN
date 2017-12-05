@@ -12,6 +12,7 @@ TTSet=01			#UCF-101 Split Set [01 02 03]
 IndexFirstVideo=1		#Index of first video to be encoded [1,2, .... ]
 NumVideos=1			#Number of Video files to be encoded
 StrComment=""			#Comment to be added at the end of the directory that will be made (if doesn't exist) to contain the output MVs
+Overwrite=1			#Overwrite any exisitng MV files in the directory
 
 ## Parsing Command Line Parameters
 ## cmd exmaple: ./Generate-Split-1 -ecfg=encoder.cfg -qp=25 -sr=16 -res=4 -settype=test sset=01 -ifvid=1 -nvid=5 -strcom=Opt1a
@@ -49,6 +50,10 @@ case $i in
     ;;
     -nvid=*|--nvid=*)
     NumVideos="${i#*=}"
+    shift
+    ;;
+   -ow=*|--ow=*)
+    Overwrite="${i#*=}"
     shift
     ;;
    -strcom=*|--strcom=*)
@@ -100,24 +105,20 @@ while [ $cnt1 -le $IndexLastVideo ]
 do
 Line=${Lines[$cnt1]}
 
-var0=$(echo $Line | awk -F".avi" '{print $1,$2}')   
-set -- $var0 "$@"
-AbsFileName=$1".avi"
-
-var1=$(echo $AbsFileName | awk -F"/" '{print $1,$2}')   
-set -- $var1 "$@"
-Directory=$1
-FileName=$2
-
-var2=$(echo $FileName | awk -F"." '{print $1,$2}')   
-set -- $var2 "$@"
-FileNameP1=$1
-FileNameP2=$2
+Directory="${Line%/*}"
+FileName="${Line##*/}"
+FileNameP1="${FileName%.*}"
+FileNameP2="avi"
+AbsFileName=$Directory"/"$FileNameP1.$FileNameP2
 
 #%%%%%%%%%% Show Processing Progress to keep track
 PerCompleted1=$((100*(cnt1-IndexFirstVideo+1)/(IndexLastVideo-IndexFirstVideo+1)))
 PerCompleted2=$((100*(cnt1-IndexFirstVideo+1)%(IndexLastVideo-IndexFirstVideo+1)))
 echo "Processing video file number $cnt1  [$IndexFirstVideo - $IndexLastVideo] ($AbsFileName) ... $PerCompleted1.$PerCompleted2% completed"
+
+#%% check if the MV alreadyy made and stored
+if [[ ((($Overwrite -eq 1) || (($SetType = "train") && (! -e "../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin"))) || (($Overwrite -eq 1) || (($SetType = "test") && (! -e "../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin")))) ]] ; 
+then
 
 #%%%%%%%%%% Transcoding FileName from .avi to .yuv and store the output yuv file in ./vid/"
 cd JM_MVX_NoTexture/bin
@@ -141,7 +142,7 @@ break
 fi
 
 rm ./vid/JMEncodedVideo.264
-./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p OutputFile="./vid/JMEncodedVideo.264" > /dev/null
+./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p Verbose=0 -p OutputFile="./vid/JMEncodedVideo.264" > /dev/null
 
 if [ ! -e "./vid/JMEncodedVideo.264" ] ; then
 echo "Problem with encoding [$AbsFileName] yuv to 264, ./vid/JMEncodedVideo.264 is not generated"
@@ -164,7 +165,7 @@ mv -f mv.bin ../../mbmap/mv_dec.bin
 cd ../../mbmap
 if [ $mbmapXxX -eq 8 ] || [ $mbmapXxX -eq 4 ];
 then
-./mbmap -h 240 -w 320 -$3 -o JMMV_mbmap.bin mv_dec.bin > /dev/null
+./mbmap -h 240 -w 320 -$mbmapXxX -o JMMV_mbmap.bin mv_dec.bin > /dev/null
 else
  ./mbmap -h 240 -w 320 -o JMMV_mbmap.bin mv_dec.bin > /dev/null
 fi
@@ -188,17 +189,35 @@ then
  then
  mkdir ../../JMMV/JMMV_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment
  fi
+ 
+ if ! [ -d ../../JMMV/JMStats_NoTexture_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
+ then
+ mkdir ../../JMMV/JMStats_NoTexture_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment
+ fi
+
 mv -f JMMV_mbmap.bin ../../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin
+mv -f ../JM_MVX_NoTexture/bin/stats.dat ../../JMMV/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat
+
 else
+
  if ! [ -d ../../JMMV/JMMV_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
  then
- mkdir ../../JMMV/JMMV_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment
+ mkdir ../../JMMV/JMMV_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment 
  fi
+ 
+ if ! [ -d ../../JMMV/JMStats_NoTexture_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
+ then
+ mkdir ../../JMMV/JMStats_NoTexture_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment 
+ fi
+
 mv -f JMMV_mbmap.bin ../../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin
+mv -f ../JM_MVX_NoTexture/bin/stats.dat ../../JMMV/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat
+
 fi
 
-
 cd ..
+
+fi # end check if the files already exists
 cnt1=$((cnt1 + cnt2))
 done < "$InputFileList"   #until end of FileNameList or NumVideos
 
