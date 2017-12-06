@@ -114,9 +114,7 @@ AbsFileName=$Directory"/"$FileNameP1.$FileNameP2
 #%%%%%%%%%% Show Processing Progress to keep track
 PerCompleted1=$((100*(cnt1-IndexFirstVideo+1)/(IndexLastVideo-IndexFirstVideo+1)))
 PerCompleted2=$((100*(cnt1-IndexFirstVideo+1)%(IndexLastVideo-IndexFirstVideo+1)))
-echo "$StrComment: QP=$QPISlice, MV Res=$mbmapXxX, Split$TTSet, Set type=$SetType, Index of First Video=$IndexFirstVideo, Number of Videos=$TotalVideos" 
-echo " Processing video file number $cnt1  [$IndexFirstVideo - $IndexLastVideo] ($AbsFileName) ... $PerCompleted1.$PerCompleted2% completed .. $(date +"%d-%m-%y %T")"
-echo %--------------------------------------------------------------------------------------------------------------------------------
+echo "($StrComment, $SetType) processing video file number $cnt1  [$IndexFirstVideo - $IndexLastVideo] ($AbsFileName) ... $PerCompleted1.$PerCompleted2% completed .. $(date +"%d-%m-%y %T")"
 
 
 
