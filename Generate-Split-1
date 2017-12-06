@@ -114,7 +114,11 @@ AbsFileName=$Directory"/"$FileNameP1.$FileNameP2
 #%%%%%%%%%% Show Processing Progress to keep track
 PerCompleted1=$((100*(cnt1-IndexFirstVideo+1)/(IndexLastVideo-IndexFirstVideo+1)))
 PerCompleted2=$((100*(cnt1-IndexFirstVideo+1)%(IndexLastVideo-IndexFirstVideo+1)))
-echo "Processing video file number $cnt1  [$IndexFirstVideo - $IndexLastVideo] ($AbsFileName) ... $PerCompleted1.$PerCompleted2% completed .. $(date +"%d-%m-%y %T")"
+echo "$StrComment: QP=$QPISlice, MV Res=$mbmapXxX, Split$TTSet, Set type=$SetType, Index of First Video=$IndexFirstVideo, Number of Videos=$TotalVideos" 
+echo " Processing video file number $cnt1  [$IndexFirstVideo - $IndexLastVideo] ($AbsFileName) ... $PerCompleted1.$PerCompleted2% completed .. $(date +"%d-%m-%y %T")"
+echo %--------------------------------------------------------------------------------------------------------------------------------
+
+
 
 #%% check if the MV alreadyy made and stored
 if [[ ((($Overwrite -eq 1) || (($SetType = "train") && (! -e "../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin"))) || (($Overwrite -eq 1) || (($SetType = "test") && (! -e "../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin")))) ]] ; 
