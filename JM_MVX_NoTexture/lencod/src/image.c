@@ -2364,6 +2364,12 @@ static void ReportSimple(VideoParameters *p_Vid, char *pic_type, int cur_bits, D
     tmp_time, (int) p_Vid->me_time,
     p_Vid->fld_flag ? "FLD" : "FRM", 
     p_Vid->nal_reference_idc);
+
+// Added by Jubran to get number of bits per frame
+FILE *FStatout = fopen("FrameStats.dat","a+b") ;
+fprintf(FStatout,"%05d %8d\n",p_Vid->frm_no_in_file,cur_bits) ;
+fclose (FStatout) ;
+////////////// end of add by jubran
 }
 
 static void ReportVerbose(VideoParameters *p_Vid, char *pic_type, int cur_bits, int wp_method, int lambda, DistMetric *mPSNR, int tmp_time, int direct_mode)

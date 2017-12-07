@@ -146,7 +146,10 @@ break
 fi
 
 rm ./vid/JMEncodedVideo.264
-./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p Verbose=0 -p OutputFile="./vid/JMEncodedVideo.264" > logNoTexture # > /dev/null
+rm -rf ./FrameStats.dat
+#./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p Verbose=0 -p OutputFile="./vid/JMEncodedVideo.264" > logNoTexture # > /dev/null
+
+./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p OutputFile="./vid/JMEncodedVideo.264" > logNoTexture # > /dev/null
 
 if [ ! -e "./vid/JMEncodedVideo.264" ] ; then
 echo "Problem with encoding [$AbsFileName] yuv to 264, ./vid/JMEncodedVideo.264 is not generated"
@@ -192,7 +195,10 @@ break
 fi
 
 rm ./vid/JMEncodedVideo.264
-./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p Verbose=0 -p OutputFile="./vid/JMEncodedVideo.264" > logOrig #> /dev/null
+rm -rf ./FrameStats.dat
+#./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p Verbose=0 -p OutputFile="./vid/JMEncodedVideo.264" > logOrig #> /dev/null
+
+./lencod.exe -f $enc_cfg -p InputFile="./vid/JMInputVideo.yuv" -p QPISlice=$QPISlice -p QPPSlice=$QPPSlice -p SearchRange=$SearchRange -p FramesToBeEncoded=$NumFrame -p OutputFile="./vid/JMEncodedVideo.264" > logOrig #> /dev/null
 
 if [ ! -e "./vid/JMEncodedVideo.264" ] ; then
 echo "Problem with encoding [$AbsFileName] yuv to 264, ./vid/JMEncodedVideo.264 is not generated"
@@ -251,7 +257,9 @@ then
 
 mv -f JMMV_mbmap.bin ../../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin
 mv -f ../JM_MVX_NoTexture/bin/stats.dat ../../JMMV/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat
+mv -f ../JM_MVX_NoTexture/bin/FrameStats.dat ../../JMMV/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat
 mv -f ../JM_MVX/bin/stats.dat ../../JMMV/JMStats_OrigJM_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat
+mv -f ../JM_MVX/bin/FrameStats.dat ../../JMMV/JMStats_OrigJM_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat
 
 else
 
@@ -273,7 +281,9 @@ else
 
 mv -f JMMV_mbmap.bin ../../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin
 mv -f ../JM_MVX_NoTexture/bin/stats.dat ../../JMMV/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat
+mv -f ../JM_MVX_NoTexture/bin/FrameStats.dat ../../JMMV/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat
 mv -f ../JM_MVX/bin/stats.dat ../../JMMV/JMStats_OrigJM_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat
+mv -f ../JM_MVX/bin/FrameStats.dat ../../JMMV/JMStats_OrigJM_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat
 
 fi
 
