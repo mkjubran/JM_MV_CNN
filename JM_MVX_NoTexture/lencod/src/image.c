@@ -395,6 +395,85 @@ void update_global_stats(InputParameters *p_Inp, StatParameters *gl_stats, StatP
       }
     }
   }
+
+// Added By Jubran to get Stats Per Frame
+int yP=0; //motion data P-slice
+int yB=0; //motion data B-slice
+yP=(double)(cur_stats->bit_use_mode[P_SLICE][0] + cur_stats->bit_use_mode[P_SLICE][1] + cur_stats->bit_use_mode[P_SLICE][2]
+  + cur_stats->bit_use_mode[P_SLICE][3] + cur_stats->bit_use_mode[P_SLICE][P8x8]);
+
+yB=(double)(cur_stats->bit_use_mode[B_SLICE][0] + cur_stats->bit_use_mode[B_SLICE][1] + cur_stats->bit_use_mode[B_SLICE][2]
+  + cur_stats->bit_use_mode[B_SLICE][3] + cur_stats->bit_use_mode[B_SLICE][P8x8]);
+
+  FILE *FStatout = fopen("FrameStats.dat","a+b") ;
+
+ fprintf(FStatout,"\n ---------------------|----------------|----------------|----------------|----------------|");
+  fprintf(FStatout,"\n  Bit usage:          |      Intra     |      Inter     |    B frame     |    SP frame    |");
+  fprintf(FStatout,"\n ---------------------|----------------|----------------|----------------|----------------|");
+
+  fprintf(FStatout,"\n Header               |");
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_header[I_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_header[P_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_header[B_SLICE]);
+
+  fprintf(FStatout,"\n Mode                 |");
+  fprintf(FStatout," %10.2f     |", (float)cur_stats->bit_use_mb_type[I_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float)cur_stats->bit_use_mb_type[P_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float)cur_stats->bit_use_mb_type[B_SLICE]);
+
+  fprintf(FStatout,"\n Motion Info          |");
+  fprintf(FStatout,"        ./.     |");
+  fprintf(FStatout," %10.2f     |", (float) yP);
+  fprintf(FStatout," %10.2f     |", (float) yB);
+
+  fprintf(FStatout,"\n CBP Y/C              |");
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->tmp_bit_use_cbp[I_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->tmp_bit_use_cbp[P_SLICE]);   
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->tmp_bit_use_cbp[B_SLICE]);
+
+  // Print SP_SLICE
+  fprintf(FStatout,"\n Coeffs. Y            |");
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[0][I_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[0][P_SLICE]);   
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[0][B_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[0][SP_SLICE]);   
+
+  fprintf(FStatout,"\n Coeffs. C            |");
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeffC[I_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeffC[P_SLICE]);   
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeffC[B_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeffC[SP_SLICE]);   
+
+  fprintf(FStatout,"\n Coeffs. CB           |");
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[1][I_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[1][P_SLICE]);   
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[1][B_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[1][SP_SLICE]);   
+  
+  fprintf(FStatout,"\n Coeffs. CR           |");
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[2][I_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[2][P_SLICE]);   
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[2][B_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_coeff[2][SP_SLICE]);   
+
+  fprintf(FStatout,"\n Delta quant          |");
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_delta_quant[I_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_delta_quant[P_SLICE]);   
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_delta_quant[B_SLICE]);
+
+  fprintf(FStatout,"\n Stuffing Bits        |");
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_stuffing_bits[I_SLICE]);
+  fprintf(FStatout," %10.2f     |", (float) cur_stats->bit_use_stuffing_bits[P_SLICE]);   
+  fprintf(FStatout," %10.2f     |\n", (float) cur_stats->bit_use_stuffing_bits[B_SLICE]);
+
+// added to sum the total bits per frame:
+int x=0;
+x=cur_stats->bit_use_header[I_SLICE]+cur_stats->bit_use_header[P_SLICE]+cur_stats->bit_use_header[B_SLICE]+cur_stats->bit_use_mb_type[I_SLICE]+cur_stats->bit_use_mb_type[P_SLICE]+cur_stats->bit_use_mb_type[B_SLICE]+cur_stats->tmp_bit_use_cbp[I_SLICE]+cur_stats->tmp_bit_use_cbp[P_SLICE]+cur_stats->tmp_bit_use_cbp[B_SLICE]+cur_stats->bit_use_coeff[0][I_SLICE]+cur_stats->bit_use_coeff[0][P_SLICE]+cur_stats->bit_use_coeff[0][B_SLICE]+cur_stats->bit_use_coeff[0][SP_SLICE]+cur_stats->bit_use_coeffC[I_SLICE]+cur_stats->bit_use_coeffC[P_SLICE]+cur_stats->bit_use_coeffC[B_SLICE]+cur_stats->bit_use_coeffC[SP_SLICE]+cur_stats->bit_use_coeff[1][I_SLICE]+cur_stats->bit_use_coeff[1][P_SLICE]+cur_stats->bit_use_coeff[1][B_SLICE]+cur_stats->bit_use_coeff[1][SP_SLICE]+cur_stats->bit_use_coeff[2][I_SLICE]+cur_stats->bit_use_coeff[2][P_SLICE]+cur_stats->bit_use_coeff[2][B_SLICE]+cur_stats->bit_use_coeff[2][SP_SLICE]+cur_stats->bit_use_delta_quant[I_SLICE]+cur_stats->bit_use_delta_quant[P_SLICE]+cur_stats->bit_use_delta_quant[B_SLICE]+cur_stats->bit_use_stuffing_bits[I_SLICE]+cur_stats->bit_use_stuffing_bits[P_SLICE]+cur_stats->bit_use_stuffing_bits[B_SLICE]+yP+yB;
+
+fprintf(FStatout," Total Bits (sum) = %10.2f     \n", (float) x);
+fclose (FStatout) ;
+// end of addition by Jubran
+
 }
 
 static void storeRedundantFrame(VideoParameters *p_Vid)
@@ -2702,6 +2781,13 @@ static void ReportNALNonVLCBits(VideoParameters *p_Vid, int64 tmp_time)
     if (p_Inp->Verbose != 0)
       printf ("%05d(NVB)%8d \n", p_Vid->frame_no, p_Stats->bit_ctr_parametersets_n);
   }
+
+// Added by Jubran to get number of bits per frame
+FILE *FStatout = fopen("FrameStats.dat","a+b") ;
+fprintf(FStatout,"%05d %8d\n",p_Vid->frame_no, p_Stats->bit_ctr_parametersets_n) ;
+fclose (FStatout) ;
+////////////// end of add by jubran
+
 }
 
 static void ReportFirstframe(VideoParameters *p_Vid, int64 tmp_time)

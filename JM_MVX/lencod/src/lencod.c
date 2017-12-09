@@ -961,7 +961,6 @@ static void encode_sequence(VideoParameters *p_Vid, InputParameters *p_Inp)
     p_Vid->curr_frm_idx = curr_frame_to_code;
     p_Vid->p_curr_frm_struct = p_frm + ( p_Vid->curr_frm_idx % frm_struct_buffer ); // pointer to current frame structure
     p_Vid->number = curr_frame_to_code;
-
     }
 
     if ( p_Vid->p_curr_frm_struct->frame_no >= p_Inp->no_frames )
