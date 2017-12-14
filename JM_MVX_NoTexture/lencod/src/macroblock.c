@@ -218,6 +218,20 @@ void next_macroblock(Macroblock *currMB)
   // Statistics
   cur_stats->quant[slice_type] += currMB->qp;
   ++cur_stats->num_macroblocks[slice_type];
+
+// Added by Jubran to get number of bits per MB
+int yP=0; //motion data P-slice
+int yB=0; //motion data B-slice
+yP=(double)(cur_stats->bit_use_mode[P_SLICE][0] + cur_stats->bit_use_mode[P_SLICE][1] + cur_stats->bit_use_mode[P_SLICE][2]
+  + cur_stats->bit_use_mode[P_SLICE][3] + cur_stats->bit_use_mode[P_SLICE][P8x8]);
+
+yB=(double)(cur_stats->bit_use_mode[B_SLICE][0] + cur_stats->bit_use_mode[B_SLICE][1] + cur_stats->bit_use_mode[B_SLICE][2]
+  + cur_stats->bit_use_mode[B_SLICE][3] + cur_stats->bit_use_mode[B_SLICE][P8x8]);
+FILE *FStatout = fopen("MBStats.dat","a+b") ; 
+fprintf(FStatout,"\n  %6d  | %6d | %7d |  %7d |  %7d   |  %7d   | %7d | %7d | %7d | %7d | %7d |   %5d    | %5d    |",p_Vid->frame_no,currMB->mbAddrX,mbBits->mb_total, cur_stats->bit_use_mb_type[slice_type], yP,yB, cur_stats->tmp_bit_use_cbp[slice_type],cur_stats->bit_use_coeffC[slice_type], cur_stats->bit_use_coeff[0][slice_type], cur_stats->bit_use_coeff[1][slice_type], cur_stats->bit_use_coeff[2][slice_type], cur_stats->bit_use_delta_quant[slice_type], cur_stats->bit_use_stuffing_bits[slice_type]) ;
+fclose (FStatout) ;
+// end of addition by Jubran
+
 }
 
 static void set_chroma_qp(Macroblock* currMB)

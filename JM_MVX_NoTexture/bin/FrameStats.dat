@@ -6,15 +6,15 @@
  Mode                 |    8625.00     |       0.00     |       0.00     |
  Motion Info          |      ./.       |       0.00     |       0.00     |
  CBP Y/C              |     955.00     |       0.00     |       0.00     |
- Coeffs. Y            |   66554.00     |       0.00     |       0.00     |       0.00     |
- Coeffs. C            |   13199.00     |       0.00     |       0.00     |       0.00     |
+ Coeffs. Y            |       0.00     |       0.00     |       0.00     |       0.00     |
+ Coeffs. C            |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CB           |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CR           |       0.00     |       0.00     |       0.00     |       0.00     |
  Delta quant          |     300.00     |       0.00     |       0.00     |
- Stuffing Bits        |       7.00     |       0.00     |       0.00     |
- Total Bits (sum) =   89664.00     
+ Stuffing Bits        |       8.00     |       0.00     |       0.00     |
+ Total Bits (sum) =    9912.00     
 Frame=00000, Actual (Written) Size=     168
-Frame=00000, Actual (Written) Size=    89704
+Frame=00000, Actual (Written) Size=     9952
 
  ---------------------|----------------|----------------|----------------|----------------|
   Bit usage:          |      Intra     |      Inter     |    B frame     |    SP frame    |
@@ -23,14 +23,14 @@ Frame=00000, Actual (Written) Size=    89704
  Mode                 |       0.00     |    1839.00     |       0.00     |
  Motion Info          |      ./.       |    3546.00     |       0.00     |
  CBP Y/C              |       0.00     |    1685.00     |       0.00     |
- Coeffs. Y            |       0.00     |   17314.00     |       0.00     |       0.00     |
- Coeffs. C            |       0.00     |    1428.00     |       0.00     |       0.00     |
+ Coeffs. Y            |       0.00     |       0.00     |       0.00     |       0.00     |
+ Coeffs. C            |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CB           |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CR           |       0.00     |       0.00     |       0.00     |       0.00     |
  Delta quant          |       0.00     |     245.00     |       0.00     |
- Stuffing Bits        |       0.00     |       6.00     |       0.00     |
- Total Bits (sum) =   26112.00     
-Frame=00001, Actual (Written) Size=    26152
+ Stuffing Bits        |       0.00     |       4.00     |       0.00     |
+ Total Bits (sum) =    7368.00     
+Frame=00001, Actual (Written) Size=     7408
 
  ---------------------|----------------|----------------|----------------|----------------|
   Bit usage:          |      Intra     |      Inter     |    B frame     |    SP frame    |
@@ -39,14 +39,14 @@ Frame=00001, Actual (Written) Size=    26152
  Mode                 |       0.00     |    1983.00     |       0.00     |
  Motion Info          |      ./.       |    4239.00     |       0.00     |
  CBP Y/C              |       0.00     |    1815.00     |       0.00     |
- Coeffs. Y            |       0.00     |   13820.00     |       0.00     |       0.00     |
- Coeffs. C            |       0.00     |    1566.00     |       0.00     |       0.00     |
+ Coeffs. Y            |       0.00     |       0.00     |       0.00     |       0.00     |
+ Coeffs. C            |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CB           |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CR           |       0.00     |       0.00     |       0.00     |       0.00     |
  Delta quant          |       0.00     |     288.00     |       0.00     |
- Stuffing Bits        |       0.00     |       4.00     |       0.00     |
- Total Bits (sum) =   23784.00     
-Frame=00002, Actual (Written) Size=    23824
+ Stuffing Bits        |       0.00     |       6.00     |       0.00     |
+ Total Bits (sum) =    8400.00     
+Frame=00002, Actual (Written) Size=     8440
 
  ---------------------|----------------|----------------|----------------|----------------|
   Bit usage:          |      Intra     |      Inter     |    B frame     |    SP frame    |
@@ -55,14 +55,14 @@ Frame=00002, Actual (Written) Size=    23824
  Mode                 |       0.00     |    1858.00     |       0.00     |
  Motion Info          |      ./.       |    4696.00     |       0.00     |
  CBP Y/C              |       0.00     |    1595.00     |       0.00     |
- Coeffs. Y            |       0.00     |   16232.00     |       0.00     |       0.00     |
- Coeffs. C            |       0.00     |    2445.00     |       0.00     |       0.00     |
+ Coeffs. Y            |       0.00     |       0.00     |       0.00     |       0.00     |
+ Coeffs. C            |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CB           |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CR           |       0.00     |       0.00     |       0.00     |       0.00     |
  Delta quant          |       0.00     |     216.00     |       0.00     |
- Stuffing Bits        |       0.00     |       5.00     |       0.00     |
- Total Bits (sum) =   27121.00     
-Frame=00003, Actual (Written) Size=    27160
+ Stuffing Bits        |       0.00     |       2.00     |       0.00     |
+ Total Bits (sum) =    8441.00     
+Frame=00003, Actual (Written) Size=     8480
 
  ---------------------|----------------|----------------|----------------|----------------|
   Bit usage:          |      Intra     |      Inter     |    B frame     |    SP frame    |
@@ -71,14 +71,14 @@ Frame=00003, Actual (Written) Size=    27160
  Mode                 |       0.00     |    1780.00     |       0.00     |
  Motion Info          |      ./.       |    4028.00     |       0.00     |
  CBP Y/C              |       0.00     |    1670.00     |       0.00     |
- Coeffs. Y            |       0.00     |   21009.00     |       0.00     |       0.00     |
- Coeffs. C            |       0.00     |    3134.00     |       0.00     |       0.00     |
+ Coeffs. Y            |       0.00     |       0.00     |       0.00     |       0.00     |
+ Coeffs. C            |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CB           |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CR           |       0.00     |       0.00     |       0.00     |       0.00     |
  Delta quant          |       0.00     |     234.00     |       0.00     |
- Stuffing Bits        |       0.00     |       4.00     |       0.00     |
- Total Bits (sum) =   31921.00     
-Frame=00004, Actual (Written) Size=    31960
+ Stuffing Bits        |       0.00     |       3.00     |       0.00     |
+ Total Bits (sum) =    7777.00     
+Frame=00004, Actual (Written) Size=     7816
 
  ---------------------|----------------|----------------|----------------|----------------|
   Bit usage:          |      Intra     |      Inter     |    B frame     |    SP frame    |
@@ -87,14 +87,14 @@ Frame=00004, Actual (Written) Size=    31960
  Mode                 |       0.00     |    1900.00     |       0.00     |
  Motion Info          |      ./.       |    3841.00     |       0.00     |
  CBP Y/C              |       0.00     |    1452.00     |       0.00     |
- Coeffs. Y            |       0.00     |   17317.00     |       0.00     |       0.00     |
- Coeffs. C            |       0.00     |    2697.00     |       0.00     |       0.00     |
+ Coeffs. Y            |       0.00     |       0.00     |       0.00     |       0.00     |
+ Coeffs. C            |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CB           |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CR           |       0.00     |       0.00     |       0.00     |       0.00     |
  Delta quant          |       0.00     |     207.00     |       0.00     |
- Stuffing Bits        |       0.00     |       5.00     |       0.00     |
- Total Bits (sum) =   27465.00     
-Frame=00005, Actual (Written) Size=    27504
+ Stuffing Bits        |       0.00     |       3.00     |       0.00     |
+ Total Bits (sum) =    7449.00     
+Frame=00005, Actual (Written) Size=     7488
 
  ---------------------|----------------|----------------|----------------|----------------|
   Bit usage:          |      Intra     |      Inter     |    B frame     |    SP frame    |
@@ -103,14 +103,14 @@ Frame=00005, Actual (Written) Size=    27504
  Mode                 |       0.00     |    2191.00     |       0.00     |
  Motion Info          |      ./.       |    4307.00     |       0.00     |
  CBP Y/C              |       0.00     |    1529.00     |       0.00     |
- Coeffs. Y            |       0.00     |   21150.00     |       0.00     |       0.00     |
- Coeffs. C            |       0.00     |    4141.00     |       0.00     |       0.00     |
+ Coeffs. Y            |       0.00     |       0.00     |       0.00     |       0.00     |
+ Coeffs. C            |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CB           |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CR           |       0.00     |       0.00     |       0.00     |       0.00     |
  Delta quant          |       0.00     |     225.00     |       0.00     |
- Stuffing Bits        |       0.00     |       2.00     |       0.00     |
- Total Bits (sum) =   33617.00     
-Frame=00006, Actual (Written) Size=    33656
+ Stuffing Bits        |       0.00     |       5.00     |       0.00     |
+ Total Bits (sum) =    8329.00     
+Frame=00006, Actual (Written) Size=     8368
 
  ---------------------|----------------|----------------|----------------|----------------|
   Bit usage:          |      Intra     |      Inter     |    B frame     |    SP frame    |
@@ -119,14 +119,14 @@ Frame=00006, Actual (Written) Size=    33656
  Mode                 |       0.00     |    2210.00     |       0.00     |
  Motion Info          |      ./.       |    3869.00     |       0.00     |
  CBP Y/C              |       0.00     |    1176.00     |       0.00     |
- Coeffs. Y            |       0.00     |   14461.00     |       0.00     |       0.00     |
- Coeffs. C            |       0.00     |    2719.00     |       0.00     |       0.00     |
+ Coeffs. Y            |       0.00     |       0.00     |       0.00     |       0.00     |
+ Coeffs. C            |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CB           |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CR           |       0.00     |       0.00     |       0.00     |       0.00     |
  Delta quant          |       0.00     |     187.00     |       0.00     |
- Stuffing Bits        |       0.00     |       3.00     |       0.00     |
- Total Bits (sum) =   24697.00     
-Frame=00007, Actual (Written) Size=    24736
+ Stuffing Bits        |       0.00     |       7.00     |       0.00     |
+ Total Bits (sum) =    7521.00     
+Frame=00007, Actual (Written) Size=     7560
 
  ---------------------|----------------|----------------|----------------|----------------|
   Bit usage:          |      Intra     |      Inter     |    B frame     |    SP frame    |
@@ -135,14 +135,14 @@ Frame=00007, Actual (Written) Size=    24736
  Mode                 |       0.00     |    3027.00     |       0.00     |
  Motion Info          |      ./.       |    4208.00     |       0.00     |
  CBP Y/C              |       0.00     |     998.00     |       0.00     |
- Coeffs. Y            |       0.00     |   22031.00     |       0.00     |       0.00     |
- Coeffs. C            |       0.00     |    4108.00     |       0.00     |       0.00     |
+ Coeffs. Y            |       0.00     |       0.00     |       0.00     |       0.00     |
+ Coeffs. C            |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CB           |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CR           |       0.00     |       0.00     |       0.00     |       0.00     |
  Delta quant          |       0.00     |     177.00     |       0.00     |
- Stuffing Bits        |       0.00     |       2.00     |       0.00     |
- Total Bits (sum) =   34609.00     
-Frame=00008, Actual (Written) Size=    34648
+ Stuffing Bits        |       0.00     |       5.00     |       0.00     |
+ Total Bits (sum) =    8473.00     
+Frame=00008, Actual (Written) Size=     8512
 
  ---------------------|----------------|----------------|----------------|----------------|
   Bit usage:          |      Intra     |      Inter     |    B frame     |    SP frame    |
@@ -151,11 +151,11 @@ Frame=00008, Actual (Written) Size=    34648
  Mode                 |       0.00     |    1808.00     |       0.00     |
  Motion Info          |      ./.       |    4520.00     |       0.00     |
  CBP Y/C              |       0.00     |    1071.00     |       0.00     |
- Coeffs. Y            |       0.00     |   14833.00     |       0.00     |       0.00     |
- Coeffs. C            |       0.00     |    2308.00     |       0.00     |       0.00     |
+ Coeffs. Y            |       0.00     |       0.00     |       0.00     |       0.00     |
+ Coeffs. C            |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CB           |       0.00     |       0.00     |       0.00     |       0.00     |
  Coeffs. CR           |       0.00     |       0.00     |       0.00     |       0.00     |
  Delta quant          |       0.00     |     156.00     |       0.00     |
- Stuffing Bits        |       0.00     |       6.00     |       0.00     |
- Total Bits (sum) =   24777.00     
-Frame=00009, Actual (Written) Size=    24816
+ Stuffing Bits        |       0.00     |       3.00     |       0.00     |
+ Total Bits (sum) =    7633.00     
+Frame=00009, Actual (Written) Size=     7672

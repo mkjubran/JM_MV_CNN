@@ -38,7 +38,7 @@ int WriteAnnexbNALU (VideoParameters *p_Vid, NALU_t *n, FILE **f_annexb)
   assert ((*f_annexb) != NULL);
   assert (n->startcodeprefix_len == 3 || n->startcodeprefix_len == 4);
 
-// printf ("WriteAnnexbNALU: writing %d bytes w/ startcode_len %d\n", n->len+1, n->startcodeprefix_len);
+ //printf ("WriteAnnexbNALU: writing %d bytes w/ startcode_len %d\n", n->len+1, n->startcodeprefix_len);
   if (n->startcodeprefix_len < 4)
   {
     offset = 1;

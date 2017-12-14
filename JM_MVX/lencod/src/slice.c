@@ -357,7 +357,7 @@ static int terminate_slice(Macroblock *currMB, int lastslice, StatParameters *cu
   EncodingEnvironmentPtr eep;
   int part;
   int tmp_stuffingbits = currMB->bits.mb_stuffing;
-
+    
   if (currSlice->symbol_mode == CABAC)
     write_terminating_bit (currSlice, 1);      // only once, not for all partitions
 
@@ -371,7 +371,11 @@ static int terminate_slice(Macroblock *currMB, int lastslice, StatParameters *cu
     {
       if (currSlice->symbol_mode == CAVLC)
       {
-        SODBtoRBSP(currStream);
+	// Added by Jubran to increament the stuffing bits with the SODB to RBSP (byte alignement bits)
+	cur_stats->bit_use_stuffing_bits[currSlice->slice_type]=currStream->bits_to_go;
+	// end of addition by Jubran (needs revisit as there is one bit added at some slices)
+
+       	SODBtoRBSP(currStream);
         currNalu->len = RBSPtoEBSP(currNalu->buf, currStream->streamBuffer, currStream->byte_pos);
       }
       else     // CABAC
@@ -404,6 +408,15 @@ static int terminate_slice(Macroblock *currMB, int lastslice, StatParameters *cu
 
   cur_stats->bit_use_stuffing_bits[currSlice->slice_type] += currMB->bits.mb_stuffing - tmp_stuffingbits;
 
+/*
+// Added by Jubran to get number of bits (pos of buffer pointer in memory) to verify number of written bits per slice
+FILE *FStatout = fopen("FrameStats.dat","a+b") ; 
+fprintf(FStatout,"\n==============================================================================");
+fprintf(FStatout,"\n?. slice %d,   bitbuf bytepos %d Stuffing=%d  Length=%d\n", p_Vid->current_slice_nr,currSlice->partArr[0].bitstream->byte_pos, cur_stats->bit_use_stuffing_bits[currSlice->slice_type],currNalu->len);
+fprintf(FStatout,"==============================================================================\n");
+fclose (FStatout) ;
+// end of addition by Jubran
+*/
   return 0;
 }
 
@@ -521,6 +534,17 @@ int encode_one_slice (VideoParameters *p_Vid, int SliceGroupId, int TotalCodedMB
     //       p_Vid->current_mb_nr, p_Vid->current_slice_nr,
     //       currSlice->partArr[0].bitstream->byte_pos, end_of_slice);
 
+
+/*
+// Added by Jubran to get number of bits (pos of buffer pointer in memory) to verify number of written bitt per slice
+FILE *FStatout = fopen("FrameStats.dat","a+b") ; 
+fprintf(FStatout,"\n==============================================================================");
+fprintf(FStatout,"\nencode_one_slice: mb %d,  slice %d,   bitbuf bytepos %d EOS %d\n", p_Vid->current_mb_nr, p_Vid->current_slice_nr,currSlice->partArr[0].bitstream->byte_pos, end_of_slice);
+fprintf(FStatout,"==============================================================================\n");
+fclose (FStatout) ;
+// end of addition by Jubran
+*/
+
     if (recode_macroblock == FALSE)       // The final processing of the macroblock has been done
     {
       p_Vid->SumFrameQP += currMB->qp;
@@ -556,6 +580,15 @@ int encode_one_slice (VideoParameters *p_Vid, int SliceGroupId, int TotalCodedMB
   p_Vid->num_ref_idx_l1_active = currSlice->num_ref_idx_active[LIST_1];
 
   terminate_slice (currMB, (NumberOfCodedMBs + TotalCodedMBs >= (int)p_Vid->PicSizeInMbs), cur_stats );
+/*
+// Added by Jubran to get number of bits (pos of buffer pointer in memory) to verify number of written bitt per slice
+FILE *FStatout2 = fopen("FrameStats.dat","a+b") ; 
+fprintf(FStatout2,"\n==============================================================================");
+fprintf(FStatout2,"\n2. encode_one_slice (end): mb %d,  slice %d,   bitbuf bytepos %d EOS %d\n", p_Vid->current_mb_nr, p_Vid->current_slice_nr,currSlice->partArr[0].bitstream->byte_pos, end_of_slice);
+fprintf(FStatout2,"==============================================================================\n");
+fclose (FStatout2) ;
+// end of addition by Jubran
+*/
   return NumberOfCodedMBs;
 }
 

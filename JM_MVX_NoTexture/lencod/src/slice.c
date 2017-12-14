@@ -371,6 +371,10 @@ static int terminate_slice(Macroblock *currMB, int lastslice, StatParameters *cu
     {
       if (currSlice->symbol_mode == CAVLC)
       {
+	// Added by Jubran to increament the stuffing bits with the SODB to RBSP (byte alignement bits)
+	cur_stats->bit_use_stuffing_bits[currSlice->slice_type]=currStream->bits_to_go;
+	// end of addition by Jubran (needs revisit as there is one bit added at some slices)
+
         SODBtoRBSP(currStream);
         currNalu->len = RBSPtoEBSP(currNalu->buf, currStream->streamBuffer, currStream->byte_pos);
       }

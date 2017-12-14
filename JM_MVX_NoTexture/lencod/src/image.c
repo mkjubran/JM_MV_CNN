@@ -422,7 +422,7 @@ yB=(double)(cur_stats->bit_use_mode[B_SLICE][0] + cur_stats->bit_use_mode[B_SLIC
   fprintf(FStatout," %10.2f     |", (float)cur_stats->bit_use_mb_type[B_SLICE]);
 
   fprintf(FStatout,"\n Motion Info          |");
-  fprintf(FStatout,"        ./.     |");
+  fprintf(FStatout,"      ./.       |");
   fprintf(FStatout," %10.2f     |", (float) yP);
   fprintf(FStatout," %10.2f     |", (float) yB);
 
@@ -2446,7 +2446,7 @@ static void ReportSimple(VideoParameters *p_Vid, char *pic_type, int cur_bits, D
 
 // Added by Jubran to get number of bits per frame
 FILE *FStatout = fopen("FrameStats.dat","a+b") ;
-fprintf(FStatout,"%05d %8d\n",p_Vid->frm_no_in_file,cur_bits) ;
+fprintf(FStatout,"Frame=%05d, Actual (Written) Size= %8d\n",p_Vid->frm_no_in_file,cur_bits) ;
 fclose (FStatout) ;
 ////////////// end of add by jubran
 }
@@ -2784,7 +2784,7 @@ static void ReportNALNonVLCBits(VideoParameters *p_Vid, int64 tmp_time)
 
 // Added by Jubran to get number of bits per frame
 FILE *FStatout = fopen("FrameStats.dat","a+b") ;
-fprintf(FStatout,"%05d %8d\n",p_Vid->frame_no, p_Stats->bit_ctr_parametersets_n) ;
+fprintf(FStatout,"Frame=%05d, Actual (Written) Size=%8d\n",p_Vid->frame_no, p_Stats->bit_ctr_parametersets_n) ;
 fclose (FStatout) ;
 ////////////// end of add by jubran
 

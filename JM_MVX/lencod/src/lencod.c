@@ -891,6 +891,21 @@ static void encode_sequence(VideoParameters *p_Vid, InputParameters *p_Inp)
   SeqStructure *p_seq_struct = p_Vid->p_pred;
   FrameUnitStruct *p_frm;
 
+
+// Added by Jubran to create Frame Stats File which included bit use per type for each Frame
+FILE *FStatout = fopen("FrameStats.dat","w") ;
+fclose (FStatout) ;
+////////////// end of add by jubran
+
+// Added by Jubran to create MB Stats File which included bit use per type for each MB
+FILE *FStatout2 = fopen("MBStats.dat","w") ;
+fprintf(FStatout2, "These stats, other than Total, are cummulative over previous MBs within each Frame");
+fprintf(FStatout2,"\n ---------|--------|---------|----------|------------|------------|---------|---------|---------|---------|---------|------------|----------|");
+fprintf(FStatout2,"\n   Frame  |   MB   |  Total  |   Type   |  P Motion  |  B Motion  |   cbp   |    C    |    y    |    Cb   |    Cr   | Delta quan | Stuffing |");
+fprintf(FStatout2,"\n ---------|--------|---------|----------|------------|------------|---------|---------|---------|---------|---------|------------|----------|");
+fclose (FStatout2) ;
+////////////// end of add by jubran
+
 #if (MVC_EXTENSION_ENABLE)
   int tmp_rate_control_enable = p_Inp->RCEnable;
 
