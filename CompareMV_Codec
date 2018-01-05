@@ -1,0 +1,22 @@
+#!/bin/bash
+clear
+cd JM_MVX
+#make
+cd bin
+rm mv.bin
+rm mvenc.bin
+./lencod.exe -f encoder_option2.cfg -p InputFile="./vid/box.yuv" -p QPISlice=20 -p QPPSlice=20 -p SearchRange=16 -p FramesToBeEncoded=20 -p OutputFile="./vid/JMEncodedVideo.264"
+./ldecod.exe -f decoder.cfg -p InputFile="./vid/JMEncodedVideo.264" -p OutputFile="./vid/Boxing_decoded.yuv"
+rm ../../mbmap/mv.bin
+rm ../../mbmap/mvenc.bin
+mv mv.bin ../../mbmap/
+mv mvenc.bin ../../mbmap/
+cd ../../mbmap
+rm jmmv.bin
+rm jmmvenc.bin
+./mbmap -h 240 -w 320 -o jmmv.bin mv.bin
+./mbmap -h 240 -w 320 -o jmmvenc.bin mvenc.bin
+mv ./jmmv.bin /media/sf_VisualizeMVX/MVbins/JMMV.bin
+mv ./jmmvenc.bin /media/sf_VisualizeMVX/MVbins/JMMVenc.bin
+cd ..
+

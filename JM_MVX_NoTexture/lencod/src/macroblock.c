@@ -3008,6 +3008,13 @@ int writeMotionVector8x8 (Macroblock *currMB,
   DataPartition* dataPart = &(currSlice->partArr[partMap[SE_MVD]]);        
   int            refindex   = refframe;
 
+  int x_=0;		//added by jubran to save the MV if encoder for debuging
+  int y_=0;		//added by jubran to save the MV if encoder for debuging
+  int dx_=0;		//added by jubran to save the MV if encoder for debuging
+  int dy_=0;		//added by jubran to save the MV if encoder for debuging
+  FILE *mvout = fopen("mvenc.bin","a+b") ; 		//added by jubran to save the MV if encoder for debuging
+
+
   MotionVector **all_mv     = currSlice->all_mv[list_idx][refindex][mv_mode];
   MotionVector *cur_mv;
   MotionVector predMV; 
@@ -3049,6 +3056,22 @@ int writeMotionVector8x8 (Macroblock *currMB,
           for (m = i; m < i + step_h; ++m)
           {
             currMB_mvd[l][m][k] = (short) curr_mvd;
+
+ //          printf("Frame=%3d, MB=%3d, x=%3d, y=%3d, MVx=%3d, MVy=%3d\n",p_Vid->frame_no,currMB->mbAddrX,(currMB->block_x + m)*4,(currMB->block_y + l)*4,mvd[0],mvd[1]); //added by jubran to write encoder MVs.
+
+x_=(currMB->block_x + m)*4;
+y_=(currMB->block_y + l)*4;
+dx_=mvd[0];
+dy_=mvd[1];
+
+  fwrite(&(p_Vid->frame_no), sizeof(int), 1, mvout) ; 	//added by jubran to save the MV if encoder for debuging
+  fwrite(&(currMB->mb_type), sizeof(int), 1, mvout) ; 	//added by jubran to save the MV if encoder for debuging
+  fwrite(&(x_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV if encoder for debuging
+  fwrite(&(y_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV if encoder for debuging
+  fwrite(&(dx_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV if encoder for debuging
+  fwrite(&(dy_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV if encoder for debuging
+  
+
           }
         }
 
@@ -3068,6 +3091,7 @@ int writeMotionVector8x8 (Macroblock *currMB,
   }
 
   mbBits->mb_inter = mbBits->mb_inter + (unsigned short) rate;
+  fclose (mvout) ;
   return rate;
 }
 

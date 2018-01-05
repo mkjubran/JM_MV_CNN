@@ -258,6 +258,9 @@ int main(int argc, char **argv)
   _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 
+FILE *mvout = fopen("mvenc.bin","w") ; 		//added by jubran to save the MV if encoder for debuging
+fclose(mvout);					//added by jubran to save the MV if encoder for debuging
+
   alloc_encoder(&p_Enc);
 
   Configure (p_Enc->p_Vid, p_Enc->p_Inp, argc, argv);
