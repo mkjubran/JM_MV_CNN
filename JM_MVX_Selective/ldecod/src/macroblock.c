@@ -554,6 +554,8 @@ void start_macroblock(Slice *currSlice, Macroblock **currMB)
   (*currMB)->p_Vid   = p_Vid;  
   (*currMB)->mbAddrX = mb_nr;
 
+  (*currMB)->ToReadTexture=0;  //added by Jubran to initialize selective encoding
+
   //assert (mb_nr < (int) p_Vid->PicSizeInMbs);
 
   /* Update coordinates of the current macroblock */
@@ -1106,6 +1108,8 @@ int j4B=0;
 int x_MaxB=4;
 int y_MaxB=4;
 
+int threshold = p_Vid->p_Inp->MinMVtoWriteTexture;           //added by jubran for selective coding
+
 /*No need for checking MB type
 if (currMB->mb_type == 1) //P16x16
 { y_MaxB=4; x_MaxB=4;} 
@@ -1130,6 +1134,12 @@ for(j4B = 0; j4B < y_MaxB; ++j4B)
   {
   dx_ = (int) currMB->mvd[0][j4B][i4B][0] ;
   dy_ = (int) currMB->mvd[0][j4B][i4B][1] ;
+
+if (abs(dx_) >= threshold || abs(dy_) >= threshold)
+{
+currMB->ToReadTexture = 1;
+printf("Frame = %3d, MB: %3d, MBType = %2d, currMB->ToReadTexture=%d, threshold=%d...\n",p_Vid->frame_no,currMB->mbAddrX,currMB->mb_type,currMB->ToReadTexture,threshold); //added by jubran to debug decoding selectivve encoding
+}
 
   x_ = (currMB->block_x + i4B) * 4 ;
   y_ = (currMB->block_y + j4B) * 4 ;

@@ -209,6 +209,9 @@ typedef struct macroblock_dec
   BlockPos mb;
   int block_x;
   int block_y;
+
+  int ToReadTexture;		  //!< added by Jubran to decide wheather to write or not texture of MB; 0->don't write texture, 1->WriteTexture
+
   int block_y_aff;
   int pix_x;
   int pix_y;
@@ -970,6 +973,8 @@ typedef struct inp_par
   char infile[FILE_NAME_SIZE];                       //!< H.264 inputfile
   char outfile[FILE_NAME_SIZE];                      //!< Decoded YUV 4:2:0 output
   char reffile[FILE_NAME_SIZE];                      //!< Optional YUV 4:2:0 reference file for SNR measurement
+
+  int MinMVtoWriteTexture;		// Jubran : minimum MV value to write texture info for inter-picture predictive coding
 
   int FileFormat;                         //!< File format of the Input file, PAR_OF_ANNEXB or PAR_OF_RTP
   int ref_offset;

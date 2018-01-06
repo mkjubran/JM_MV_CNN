@@ -362,6 +362,8 @@ typedef struct macroblock_enc
   short               block_x;                    //!< current block horizontal
   short               block_y;                    //!< current block vertical
 
+  short 	      ToWriteTexture;		  //!< added by Jubran to decide wheather to write or not texture of MB; 0->don't write texture, 1->WriteTexture
+
   short               pix_x;                      //!< current pixel horizontal
   short               pix_y;                      //!< current pixel vertical
   short               pix_c_x;                    //!< current pixel chroma horizontal

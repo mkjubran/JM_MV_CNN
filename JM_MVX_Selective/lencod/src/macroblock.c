@@ -371,7 +371,9 @@ void start_macroblock(Slice *currSlice, Macroblock **currMB, int mb_addr, Boolea
   (*currMB)->p_Vid = p_Vid;
   (*currMB)->p_Inp = p_Inp;
 
-  (*currMB)->mbAddrX = mb_addr;  
+  (*currMB)->mbAddrX = mb_addr;
+
+  (*currMB)->ToWriteTexture=0;  //added by Jubran to initialize selective encoding
 
   (*currMB)->is_intra_block = (currSlice->slice_type == I_SLICE || currSlice->slice_type == SI_SLICE) ? TRUE : FALSE;
 
@@ -3008,11 +3010,12 @@ int writeMotionVector8x8 (Macroblock *currMB,
   DataPartition* dataPart = &(currSlice->partArr[partMap[SE_MVD]]);        
   int            refindex   = refframe;
 
-  int x_=0;		//added by jubran to save the MV if encoder for debuging
-  int y_=0;		//added by jubran to save the MV if encoder for debuging
-  int dx_=0;		//added by jubran to save the MV if encoder for debuging
-  int dy_=0;		//added by jubran to save the MV if encoder for debuging
-  FILE *mvout = fopen("mvenc.bin","a+b") ; 		//added by jubran to save the MV if encoder for debuging
+  int x_=0;		//added by jubran to save the MV of encoder for debuging
+  int y_=0;		//added by jubran to save the MV of encoder for debuging
+  int dx_=0;		//added by jubran to save the MV of encoder for debuging
+  int dy_=0;		//added by jubran to save the MV of encoder for debuging
+  FILE *mvout = fopen("mvenc.bin","a+b") ; 		//added by jubran to save the MV of encoder for debuging
+  int threshold = currMB->p_Inp->MinMVtoWriteTexture;           //added by jubran for selective coding
 
   MotionVector **all_mv     = currSlice->all_mv[list_idx][refindex][mv_mode];
   MotionVector *cur_mv;
@@ -3045,6 +3048,13 @@ int writeMotionVector8x8 (Macroblock *currMB,
       mvd[0] = cur_mv->mv_x - predMV.mv_x;
       mvd[1] = cur_mv->mv_y - predMV.mv_y;
 
+//added by jubran for selective encoding
+if (abs(mvd[0])>=threshold || abs(mvd[1])>=threshold)
+{
+currMB->ToWriteTexture = 1;
+}
+//end of addition by jubran for selective encoding
+
       for (k=0; k<2; ++k)
       {
         curr_mvd = mvd[k];
@@ -3057,19 +3067,23 @@ int writeMotionVector8x8 (Macroblock *currMB,
           for (m = i; m < i + step_h; ++m)
           {
             currMB_mvd[l][m][k] = (short) curr_mvd;
- //          printf("Frame=%3d, MB=%3d, x=%3d, y=%3d, MVx=%3d, MVy=%3d\n",p_Vid->frame_no,currMB->mbAddrX,(currMB->block_x + m)*4,(currMB->block_y + l)*4,mvd[0],mvd[1]); //added by jubran to write encoder MVs.
+//added by jubran for selective encoding
+if (currMB->ToWriteTexture==1)
+{
+ printf("Frame=%3d, MB=%3d, x=%3d, y=%3d, MVx=%3d, MVy=%3d, ToWriteTexture=%1d , threshold=%2d\n",p_Vid->frame_no,currMB->mbAddrX,(currMB->block_x + m)*4,(currMB->block_y + l)*4,mvd[0],mvd[1],currMB->ToWriteTexture,threshold); //added by jubran to write encoder MVs.
+}
 
 x_=(currMB->block_x + m)*4;
 y_=(currMB->block_y + l)*4;
 dx_=mvd[0];
 dy_=mvd[1];
 
-  fwrite(&(p_Vid->frame_no), sizeof(int), 1, mvout) ; 	//added by jubran to save the MV if encoder for debuging
-  fwrite(&(currMB->mb_type), sizeof(int), 1, mvout) ; 	//added by jubran to save the MV if encoder for debuging
-  fwrite(&(x_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV if encoder for debuging
-  fwrite(&(y_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV if encoder for debuging
-  fwrite(&(dx_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV if encoder for debuging
-  fwrite(&(dy_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV if encoder for debuging
+  fwrite(&(p_Vid->frame_no), sizeof(int), 1, mvout) ; 	//added by jubran to save the MV of encoder for debuging
+  fwrite(&(currMB->mb_type), sizeof(int), 1, mvout) ; 	//added by jubran to save the MV of encoder for debuging
+  fwrite(&(x_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV of encoder for debuging
+  fwrite(&(y_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV of encoder for debuging
+  fwrite(&(dx_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV of encoder for debuging
+  fwrite(&(dy_), sizeof(int), 1, mvout) ; 		//added by jubran to save the MV of encoder for debuging
   
 
           }
@@ -3091,7 +3105,7 @@ dy_=mvd[1];
   }
 
   mbBits->mb_inter = mbBits->mb_inter + (unsigned short) rate;
-  fclose (mvout) ; 					//added by jubran to save the MV if encoder for debuging
+  fclose (mvout) ; 					//added by jubran to save the MV of encoder for debuging
   return rate;
 }
 

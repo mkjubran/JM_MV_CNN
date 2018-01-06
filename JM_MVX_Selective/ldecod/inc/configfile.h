@@ -32,6 +32,7 @@ Mapping Map[] = {
     {"RefFile",                  &cfgparams.reffile,                      1,   0.0,                       0,  0.0,              0.0,             FILE_NAME_SIZE, },
     {"WriteUV",                  &cfgparams.write_uv,                     0,   1.0,                       1,  0.0,              1.0,                             },
     {"FileFormat",               &cfgparams.FileFormat,                   0,   0.0,                       1,  0.0,              1.0,                             },
+    {"MinMVtoWriteTexture",      &cfgparams.MinMVtoWriteTexture,          0,   0.0,                       0,  0.0,              0.0,                             },  // added by jubarn
     {"RefOffset",                &cfgparams.ref_offset,                   0,   0.0,                       1,  0.0,              256.0,                             },
     {"POCScale",                 &cfgparams.poc_scale,                    0,   2.0,                       1,  1.0,              10.0,                            },
 #ifdef _LEAKYBUCKET_
