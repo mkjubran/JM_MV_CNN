@@ -5,7 +5,7 @@ cd JM_MVX_Selective
 cd bin
 rm mv.bin
 rm mvenc.bin
-./lencod.exe -f encoder_selective.cfg -p InputFile="./vid/box.yuv" -p QPISlice=20 -p QPPSlice=20 -p SearchRange=16 -p FramesToBeEncoded=20 -p OutputFile="./vid/JMEncodedVideo.264"
+./lencod.exe -f encoder_selective.cfg -p InputFile="./vid/box.yuv" -p QPISlice=20 -p QPPSlice=20 -p SearchRange=16 -p FramesToBeEncoded=5 -p OutputFile="./vid/JMEncodedVideo.264"
 ./ldecod.exe -f decoder_selective.cfg -p InputFile="./vid/JMEncodedVideo.264" -p OutputFile="./vid/Boxing_decoded.yuv"
 rm ../../mbmap/mv.bin
 rm ../../mbmap/mvenc.bin

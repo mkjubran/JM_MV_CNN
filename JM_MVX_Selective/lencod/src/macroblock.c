@@ -230,7 +230,7 @@ yB=(double)(cur_stats->bit_use_mode[B_SLICE][0] + cur_stats->bit_use_mode[B_SLIC
 FILE *FStatout = fopen("MBStats.dat","a+b") ; 
 fprintf(FStatout,"\n  %6d  | %6d | %7d |  %7d |  %7d   |  %7d   | %7d | %7d | %7d | %7d | %7d |   %5d    | %5d    |",p_Vid->frame_no,currMB->mbAddrX,mbBits->mb_total, cur_stats->bit_use_mb_type[slice_type], yP,yB, cur_stats->tmp_bit_use_cbp[slice_type],cur_stats->bit_use_coeffC[slice_type], cur_stats->bit_use_coeff[0][slice_type], cur_stats->bit_use_coeff[1][slice_type], cur_stats->bit_use_coeff[2][slice_type], cur_stats->bit_use_delta_quant[slice_type], cur_stats->bit_use_stuffing_bits[slice_type]) ;
 fclose (FStatout) ;
-// end of addition by Jubran
+// end of addition
 
 }
 
@@ -373,7 +373,7 @@ void start_macroblock(Slice *currSlice, Macroblock **currMB, int mb_addr, Boolea
 
   (*currMB)->mbAddrX = mb_addr;
 
-  (*currMB)->ToWriteTexture=0;  //added by Jubran to initialize selective encoding
+  (*currMB)->ToWriteTexture=1;  //added by Jubran to initialize selective encoding
 
   (*currMB)->is_intra_block = (currSlice->slice_type == I_SLICE || currSlice->slice_type == SI_SLICE) ? TRUE : FALSE;
 
@@ -2758,19 +2758,25 @@ int write_chroma_intra_pred_mode(Macroblock* currMB)
   
 
   //===== BITS FOR CHROMA INTRA PREDICTION MODES
-/* commented by Jubran to avoid writing uv
+///* commented by Jubran to avoid writing uv
 
+if (currMB->ToWriteTexture == 1 ) 
+{
   se.value1 = currMB->c_ipred_mode;
   se.value2 = 0;
   se.type = SE_INTRAPREDMODE;
 
   TRACE_SE(se.tracestring, "intra_chroma_pred_mode");
   currSlice->writeCIPredMode(currMB, &se, dataPart); // commented by Jubran
-*/
-
+//*/
+}
+else
+{
 // added by Jubran
+//printf("\nJubran --- drop1");
 se.len=0;
 //end of addition
+}
   currMB->bits.mb_uv_coeff += se.len;
   rate                       += se.len;
 
@@ -3049,9 +3055,9 @@ int writeMotionVector8x8 (Macroblock *currMB,
       mvd[1] = cur_mv->mv_y - predMV.mv_y;
 
 //added by jubran for selective encoding
-if (abs(mvd[0])>=threshold || abs(mvd[1])>=threshold)
+if (abs(mvd[0])<threshold && abs(mvd[1])<threshold)
 {
-currMB->ToWriteTexture = 1;
+currMB->ToWriteTexture = 0;
 }
 //end of addition by jubran for selective encoding
 
@@ -3067,11 +3073,13 @@ currMB->ToWriteTexture = 1;
           for (m = i; m < i + step_h; ++m)
           {
             currMB_mvd[l][m][k] = (short) curr_mvd;
-//added by jubran for selective encoding
+//added by jubran for selective encoding just for debugging purposes
+/*
 if (currMB->ToWriteTexture==1)
 {
  printf("Frame=%3d, MB=%3d, x=%3d, y=%3d, MVx=%3d, MVy=%3d, ToWriteTexture=%1d , threshold=%2d\n",p_Vid->frame_no,currMB->mbAddrX,(currMB->block_x + m)*4,(currMB->block_y + l)*4,mvd[0],mvd[1],currMB->ToWriteTexture,threshold); //added by jubran to write encoder MVs.
 }
+*/
 
 x_=(currMB->block_x + m)*4;
 y_=(currMB->block_y + l)*4;
@@ -4235,13 +4243,17 @@ int writeCoeff4x4_CAVLC_normal (Macroblock* currMB, int block_type, int b8, int 
 
 
 //* values modified by Jubran to replace Y, Cb, Cr coeff by Zerp CAVLC code
+if (currMB->ToWriteTexture == 0 ) 
+{
 level=0;
 run=0;
 numcoeff=0;
 numones=0;
 totzeros=0;
 numtrailingones=0;
+//printf("\nJubran --- drop2");
 //printf("\n\n ....MinMVtoWriteTexture = %d\n\n",p_Vid->p_Inp->MinMVtoWriteTexture); // added by jubran 
+}
 //*/// end of modification by jubran
 
   if (!cdc)
@@ -4266,7 +4278,11 @@ numtrailingones=0;
 
     numcoeff_vlc = (nnz < 2) ? 0 : ((nnz < 4) ? 1 : ((nnz < 8) ? 2 : 3));
 
+if (currMB->ToWriteTexture == 0 ) 
+{
 numcoeff_vlc=0; //added by Jubran
+//printf("\nJubran --- drop3");
+}
   }
   else
   {
@@ -4290,15 +4306,20 @@ numcoeff_vlc=0; //added by Jubran
     type, subblock_x, subblock_y, numcoeff_vlc, numcoeff, numtrailingones);
 #endif
 
-/* Commented by Jubran in order not to write Y and Cb, Cr Coeff to bitstream
+///* Commented by Jubran in order not to write Y and Cb, Cr Coeff to bitstream
+if (currMB->ToWriteTexture == 1 ) 
+{
   if (!cdc)
     writeSyntaxElement_NumCoeffTrailingOnes(&se, dataPart); // Commented by Jubran in order not to write CoeffTrailingOnes
  else
   writeSyntaxElement_NumCoeffTrailingOnesChromaDC(p_Vid, &se, dataPart); // Commented by Jubran in order not to write CoeffTrailingOnesChromaDC
-*/
-
+//*/
+}
+else
+{
 dataPart->bitstream->write_flag = 1; //added by Jubran as a result of comenting the lines above, must be removed if the above lines are not commented
-
+//printf("\nJubran --- drop4");
+}
   *mb_bits_coeff += se.len;
   no_bits                += se.len;
   
@@ -4704,8 +4725,12 @@ int writeCoeff4x4_CAVLC_444 (Macroblock* currMB, int block_type, int b8, int b4,
   se.type  = dptype;
 
 //added by Jubran to write no coeff to bitstream
+if (currMB->ToWriteTexture == 0 ) 
+{
 numcoeff=0;
 numcoeff_vlc = 0;
+//printf("\nJubran --- derop5");
+}
 // end of modifications of Jubran
 
   se.value1 = numcoeff;
@@ -4718,15 +4743,20 @@ numcoeff_vlc = 0;
     type, subblock_x, subblock_y, numcoeff_vlc, numcoeff, numtrailingones);
 #endif
 
-/* commented by Jubran to Write no coeff to bitstream
+///* commented by Jubran to Write no coeff to bitstream
+if (currMB->ToWriteTexture == 1 ) 
+{
   if (!cdc)
     writeSyntaxElement_NumCoeffTrailingOnes(&se, dataPart);
   else
     writeSyntaxElement_NumCoeffTrailingOnesChromaDC(p_Vid, &se, dataPart);
-*/
-
+//*/
+}
+else
+{
 dataPart->bitstream->write_flag = 1; //added by Jubran to Write no coeff to bitstream based on commenting the above stream
-
+//printf("\nJubran --- drop6");
+}
 
   *mb_bits_coeff += se.len;
   no_bits                += se.len;

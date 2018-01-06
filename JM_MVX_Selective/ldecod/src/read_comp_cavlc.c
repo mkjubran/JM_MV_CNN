@@ -270,8 +270,9 @@ void read_coeff_4x4_CAVLC (Macroblock *currMB,
   dP = &(currSlice->partArr[partMap[dptype]]);
   currStream = dP->bitstream;  
 
-/* //Commented by Jubran to avoid decoding an empty bitstream
-
+//* //Commented by Jubran to avoid decoding an empty bitstream
+if (currMB->ToReadTexture == 1 )
+{
  if (!cdc)
   {    
     // luma or chroma AC    
@@ -289,17 +290,15 @@ void read_coeff_4x4_CAVLC (Macroblock *currMB,
     numcoeff        =  currSE.value1;
     numtrailingones =  currSE.value2;
  }
-*/ //end of commenting by Jubran
-
-
-///* added by Jubran to tell the deoder that the coeff received even without being transmitted is 0;
+}
+///* //end of commenting by Jubran
+else
+{
+//added by Jubran to tell the deoder that the coeff received even without being transmitted is 0;
       numtrailingones =  0;
       currSE.len=1;
-// */ //finish adding
-
-//printf("\n\n\nJubran .. Decoding Frame=%3d ... MB=%3d ... j=%d ... i=%d..numcoeff=%d",p_Vid->frame_no, currMB->mbAddrX,j,i,numcoeff);
-//printf("\nJubran .. Decoding numcoeff=%3d ... numtrailingones=%3d ... max_coeff_num=%3d",numcoeff, numtrailingones,max_coeff_num);
-
+}
+//*/ //finish adding
   memset(levarr, 0, max_coeff_num * sizeof(int));
   memset(runarr, 0, max_coeff_num * sizeof(int));
 
@@ -307,7 +306,9 @@ void read_coeff_4x4_CAVLC (Macroblock *currMB,
   *number_coefficients = numcoeff;
 
 
-/* commented by Jubran to avoid trying to decode an empty coeff bitstream
+///* commented by Jubran to avoid trying to decode an empty coeff bitstream
+if (currMB->ToReadTexture == 1 )
+{
   if (numcoeff)
   {
     if (numtrailingones)
@@ -417,7 +418,7 @@ void read_coeff_4x4_CAVLC (Macroblock *currMB,
     }
     runarr[i] = zerosleft;   
   } // if numcoeff
-*/ //end of comment by jubran to decode a no-coeff bitstream
+} //*/ //end of comment by jubran to decode a no-coeff bitstream
 }
 
 /*!
