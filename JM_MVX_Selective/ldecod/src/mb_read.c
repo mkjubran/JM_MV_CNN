@@ -455,8 +455,8 @@ static void read_ipred_modes(Macroblock *currMB)
       currSE.mapping = linfo_ue;
     else
       currSE.reading = readCIPredMode_CABAC;
-//* Jubran commented to avoid trying to read Intra pred mode coeff
-if (currMB->ToReadTexture == 1 ) 
+///* Jubran commented to avoid trying to read Intra pred mode coeff
+if (currMB->ToReadTexture == 1 )
 {
     dP->readSyntaxElement(currMB, &currSE, dP);
     currMB->c_ipred_mode = (char) currSE.value1;
@@ -466,7 +466,7 @@ if (currMB->ToReadTexture == 1 )
       error("illegal chroma intra pred mode!\n", 600);
     }
 }
-//*//// end of commenting by jubran
+//// end of commenting by jubran
   }
 }
 

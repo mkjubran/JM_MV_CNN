@@ -2400,7 +2400,9 @@ int write_p_slice_MB_layer (Macroblock *currMB, int rdopt, int *coeff_rate)
   // VLC not intra
   else if (currMB->mb_type != 0)
   {
-//* Added by Jubran to comment
+//* Added by Jubran to comment to avoid writing 
+if (currMB->ToWriteTexture==1)
+{
     //===== Run Length Coding: Non-Skipped macroblock =====
     se.value1 = p_Vid->cod_counter;
     se.value2 = 0;
@@ -2455,7 +2457,13 @@ int write_p_slice_MB_layer (Macroblock *currMB, int rdopt, int *coeff_rate)
 
     no_bits         += se.len;
 //printf("Jubran Not skipped P-MB (%2d, %2d), Number of parssed Bits = %d\n",currMB->mb_x, currMB->mb_y,se.len);
-//added by Jubran to end commented part */  
+//added by Jubran to end commented part */ 
+printf("Jubran --- Not drop6");
+}
+else
+{
+//printf("\nJubran --- drop6");
+} 
 }
   
 else
@@ -4194,13 +4202,22 @@ fclose(fptr);
 
 //printf(" -------------------------------\n"); // added by jubran
 
-/* values modified by Jubran
+///* values modified by Jubran
+if (currMB->ToWriteTexture==0)
+{
 level=0;
 run=0;
 numcoeff=0;
 numones=0;
 totzeros=0;
 numtrailingones=0;
+printf("\nJubran --- drop7");
+}
+else
+{
+printf("\nJubran --- Not drop7");
+}
+
 *//// end of modification by jubran
 
   if (!cdc)

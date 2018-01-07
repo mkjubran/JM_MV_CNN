@@ -2760,7 +2760,7 @@ int write_chroma_intra_pred_mode(Macroblock* currMB)
   //===== BITS FOR CHROMA INTRA PREDICTION MODES
 ///* commented by Jubran to avoid writing uv
 
-if (currMB->ToWriteTexture == 1 ) 
+if ((currMB->ToWriteTexture == 1 )) 
 {
   se.value1 = currMB->c_ipred_mode;
   se.value2 = 0;
@@ -2768,12 +2768,13 @@ if (currMB->ToWriteTexture == 1 )
 
   TRACE_SE(se.tracestring, "intra_chroma_pred_mode");
   currSlice->writeCIPredMode(currMB, &se, dataPart); // commented by Jubran
+//printf("\nJubran --- Not drop1 .. MB=%3d .. Type=%d",currMB->mbAddrX,is_intra(currMB));
 //*/
 }
 else
 {
 // added by Jubran
-//printf("\nJubran --- drop1");
+//printf("\nJubran --- drop1 .. MB=%3d .. Type=%d",currMB->mbAddrX,is_intra(currMB));
 se.len=0;
 //end of addition
 }
@@ -3075,7 +3076,7 @@ currMB->ToWriteTexture = 0;
             currMB_mvd[l][m][k] = (short) curr_mvd;
 //added by jubran for selective encoding just for debugging purposes
 /*
-if (currMB->ToWriteTexture==1)
+if (currMB->ToWriteTexture==0)
 {
  printf("Frame=%3d, MB=%3d, x=%3d, y=%3d, MVx=%3d, MVy=%3d, ToWriteTexture=%1d , threshold=%2d\n",p_Vid->frame_no,currMB->mbAddrX,(currMB->block_x + m)*4,(currMB->block_y + l)*4,mvd[0],mvd[1],currMB->ToWriteTexture,threshold); //added by jubran to write encoder MVs.
 }
@@ -4243,7 +4244,7 @@ int writeCoeff4x4_CAVLC_normal (Macroblock* currMB, int block_type, int b8, int 
 
 
 //* values modified by Jubran to replace Y, Cb, Cr coeff by Zerp CAVLC code
-if (currMB->ToWriteTexture == 0 ) 
+if ((currMB->ToWriteTexture == 0 ))
 {
 level=0;
 run=0;
@@ -4251,8 +4252,12 @@ numcoeff=0;
 numones=0;
 totzeros=0;
 numtrailingones=0;
-//printf("\nJubran --- drop2");
+//printf("\nJubran --- drop2 .. MB=%3d .. Type=%d",currMB->mbAddrX,is_intra(currMB));
 //printf("\n\n ....MinMVtoWriteTexture = %d\n\n",p_Vid->p_Inp->MinMVtoWriteTexture); // added by jubran 
+}
+else
+{
+//printf("\nJubran --- Not drop2 .. MB=%3d .. Type=%d",currMB->mbAddrX,is_intra(currMB));
 }
 //*/// end of modification by jubran
 
@@ -4278,10 +4283,14 @@ numtrailingones=0;
 
     numcoeff_vlc = (nnz < 2) ? 0 : ((nnz < 4) ? 1 : ((nnz < 8) ? 2 : 3));
 
-if (currMB->ToWriteTexture == 0 ) 
+if ((currMB->ToWriteTexture == 0 ))
 {
 numcoeff_vlc=0; //added by Jubran
-//printf("\nJubran --- drop3");
+//printf("\nJubran --- drop3 .. MB=%3d .. Type=%d",currMB->mbAddrX,is_intra(currMB));
+}
+else
+{
+//printf("\nJubran --- Not drop3 .. MB=%3d .. Type=%d",currMB->mbAddrX,is_intra(currMB));
 }
   }
   else
@@ -4307,18 +4316,19 @@ numcoeff_vlc=0; //added by Jubran
 #endif
 
 ///* Commented by Jubran in order not to write Y and Cb, Cr Coeff to bitstream
-if (currMB->ToWriteTexture == 1 ) 
+if ((currMB->ToWriteTexture == 1 )) 
 {
   if (!cdc)
     writeSyntaxElement_NumCoeffTrailingOnes(&se, dataPart); // Commented by Jubran in order not to write CoeffTrailingOnes
  else
   writeSyntaxElement_NumCoeffTrailingOnesChromaDC(p_Vid, &se, dataPart); // Commented by Jubran in order not to write CoeffTrailingOnesChromaDC
 //*/
+//printf("\nJubran --- Not drop4 .. MB=%3d .. Type=%d",currMB->mbAddrX,is_intra(currMB));
 }
 else
 {
 dataPart->bitstream->write_flag = 1; //added by Jubran as a result of comenting the lines above, must be removed if the above lines are not commented
-//printf("\nJubran --- drop4");
+//printf("\nJubran --- drop4 .. MB=%3d .. Type=%d",currMB->mbAddrX,is_intra(currMB));
 }
   *mb_bits_coeff += se.len;
   no_bits                += se.len;
@@ -4744,18 +4754,19 @@ numcoeff_vlc = 0;
 #endif
 
 ///* commented by Jubran to Write no coeff to bitstream
-if (currMB->ToWriteTexture == 1 ) 
+if ((currMB->ToWriteTexture == 1 ))
 {
   if (!cdc)
     writeSyntaxElement_NumCoeffTrailingOnes(&se, dataPart);
   else
     writeSyntaxElement_NumCoeffTrailingOnesChromaDC(p_Vid, &se, dataPart);
 //*/
+//printf("\nJubran --- Not drop5 .. MB=%3d .. Type=%d",currMB->mbAddrX,is_intra(currMB));
 }
 else
 {
 dataPart->bitstream->write_flag = 1; //added by Jubran to Write no coeff to bitstream based on commenting the above stream
-//printf("\nJubran --- drop6");
+//printf("\nJubran --- drop5 .. MB=%3d .. Type=%d",currMB->mbAddrX,is_intra(currMB));
 }
 
   *mb_bits_coeff += se.len;
