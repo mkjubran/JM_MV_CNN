@@ -129,7 +129,7 @@ else
 TestIsZero=false
 fi
 
-if [[ ((($Overwrite -eq 1) || (($SetType = "train") && (! -e "../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin")) || (($SetType = "train") && ($TrainIsZero))) || (($Overwrite -eq 1) || (($SetType = "test") && (! -e "../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin")) || (($SetType = "test") && ($TestIsZero)))) ]] ; 
+if [[ ((($Overwrite -eq 1) || (($SetType = "train") && (! -e "../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin")) || (($SetType = "train") && ( $TrainIsZero = true ))) || (($Overwrite -eq 1) || (($SetType = "test") && (! -e "../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin")) || (($SetType = "test") && ( $TestIsZero = true )))) ]] ; 
 then
 
 #%%%%%%%%%% Show Processing Progress to keep track
