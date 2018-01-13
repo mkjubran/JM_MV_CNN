@@ -118,8 +118,23 @@ echo "($StrComment, $SetType) processing video file number $cnt1  [$IndexFirstVi
 
 
 
-#%% check if the MV already made and stored
-if [[ ((($Overwrite -eq 1) || (($SetType = "train") && (! -e "../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin"))) || (($Overwrite -eq 1) || (($SetType = "test") && (! -e "../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin")))) ]] ; 
+#%% check if the MV already made and stored or its size is zero
+
+if [[ (! -s ../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin) || (! -s ../JMMV/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat) || (! -s ../JMMV/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat) || (! -s ../JMMV/JMStats_OrigJM_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat) || (! -s ../JMMV/JMStats_OrigJM_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat) ]]
+then
+TrainIsZero=true
+else
+TrainIsZero=false
+fi
+
+if [[ (! -s ../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin) || (! -s ../JMMV/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat) || (! -s ../JMMV/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat) || (! -s ../JMMV/JMStats_OrigJM_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat) || (! -s ../JMMV/JMStats_OrigJM_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat) ]]
+then
+TestIsZero=true
+else
+TestIsZero=false
+fi
+
+if [[ ((($Overwrite -eq 1) || (($SetType = "train") && (! -e "../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin")) || (($SetType = "train") && ($TrainIsZero))) || (($Overwrite -eq 1) || (($SetType = "test") && (! -e "../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin")) || (($SetType = "test") && ($TestIsZero)))) ]] ; 
 then
 
 #%%%%%%%%%% Transcoding FileName from .avi to .yuv and store the output yuv file in ./vid/"
@@ -293,3 +308,5 @@ fi # end check if the files already exists
 cnt1=$((cnt1 + cnt2))
 done < "$InputFileList"   #until end of FileNameList or NumVideos
 
+
+#(($SetType = "train") && (! -e "../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin"))
