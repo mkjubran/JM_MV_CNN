@@ -10,7 +10,7 @@ mbmapXxX=8			#value [8,16]
 SetType="test"			#value [0:Train Set,1: Test Set]
 TTSet=01			#UCF-101 Split Set [01 02 03]
 IndexFirstVideo=0		#Index of first video to be encoded [1,2, .... ]
-NumVideos=4			#Number of Video files to be encoded
+NumVideos=3			#Number of Video files to be encoded
 StrComment="_A"			#Comment to be added at the end of the directory that will be made (if doesn't exist) to contain the output MVs
 Overwrite=1			#Overwrite any exisitng MV files in the directory
 
@@ -215,10 +215,18 @@ do
   IFS='=,' read -r -a JMSLine_array2 <<< "$JMSLine"
   if [[ "${JMSLine_array2[0]}" == *"Frame"* ]]
   then
-    Frame=$(echo ${JMSLine_array2[1]} | tr -d ' ') 
-    Size_Frame=$(echo ${JMSLine_array2[3]} | tr -d ' ')    
-    Size_Frame_Total=$((Size_Frame_Total + Size_Frame))    
+    Frame=$(echo ${JMSLine_array2[1]} | tr -d ' ')
+    Size_Frame=$(echo ${JMSLine_array2[3]} | tr -d ' ') 
+
+    if [[ ( $Frame == '00000' ) && ( $Size_Frame_Total != 0 ) ]]
+    then
+      Size_First_Frame=$Size_Frame;
+    fi
+    
+    Size_Frame_Total=$((Size_Frame_Total + Size_Frame)) 
+#  echo $Frame $Size_Frame $Size_Frame_Total $Size_Motion_Total
   fi
+
 done < <(paste $JMFrameStatsOrigFileName)
 
 Frame_Tolal_Orig=$Frame;
@@ -247,8 +255,15 @@ do
   if [[ "${JMSLine_array2[0]}" == *"Frame"* ]]
   then
     Frame=$(echo ${JMSLine_array2[1]} | tr -d ' ') 
-    Size_Frame=$(echo ${JMSLine_array2[3]} | tr -d ' ')    
-    Size_Frame_Total=$((Size_Frame_Total + Size_Frame))    
+    Size_Frame=$(echo ${JMSLine_array2[3]} | tr -d ' ')  
+
+    if [[ ( $Frame == '00000' ) && ( $Size_Frame_Total != 0 ) ]]
+    then
+      Size_Frame=$Size_First_Frame;
+    fi
+  
+    Size_Frame_Total=$((Size_Frame_Total + Size_Frame))   
+#    echo $Frame $Size_Frame $Size_Frame_Total $Size_Motion_Total 
   fi
 done < <(paste $JMFrameStatsNoTextureFileName)
 
