@@ -13,6 +13,7 @@ IndexFirstVideo=0		#Index of first video to be encoded [1,2, .... ]
 NumVideos=3			#Number of Video files to be encoded
 StrComment="_A"			#Comment to be added at the end of the directory that will be made (if doesn't exist) to contain the output MVs
 Overwrite=1			#Overwrite any exisitng MV files in the directory
+PathWay="../JMMV"
 
 ## Parsing Command Line Parameters
 ## cmd exmaple: ./Generate-Split-1 -ecfg=encoder.cfg -qp=25 -sr=16 -res=4 -settype=test sset=01 -ifvid=1 -nvid=5 -strcom=Opt1a
@@ -96,9 +97,9 @@ TotalVideos=$((IndexLastVideo-IndexFirstVideo+1))
 #%%% delete Stats file
 if [ $SetType = "train" ]
 then
-SizeFile="../JMMV/Size_Orig_NOTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment.dat"
+SizeFile=$PathWay"/Size_Orig_NOTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment.dat"
 else
-SizeFile="../JMMV/Size_Orig_NOTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment.dat"
+SizeFile=$PathWay"/Size_Orig_NOTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment.dat"
 fi
 
 if [[ ( $Overwrite -eq 1 ) && (-e $SizeFile) ]]
@@ -134,9 +135,9 @@ echo "($StrComment, $SetType) processing video file number $cnt1  [$IndexFirstVi
 
 #%%%%%%%%%% Check if directory exist otherwise make it, and then move the MV file to the directory after naming it appropriately"
 
-if ! [ -d ../JMMV ]
+if ! [ -d $PathWay ]
 then
-echo "../JMMV doens't exit"
+echo "$PathWay doens't exit"
 break
 fi
 
@@ -144,43 +145,43 @@ fi
 if [ $SetType = "train" ]
 then
  
- if ! [ -d ../JMMV/JMStats_NoTexture_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
+ if ! [ -d "$PathWay/JMStats_NoTexture_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment" ]
  then
-echo "../JMMV/JMStats_NoTexture_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment doens't exit"
+echo "$PathWay/JMStats_NoTexture_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment doens't exit"
  break
  fi
 
- if ! [ -d ../JMMV/JMStats_OrigJM_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
+ if ! [ -d "$PathWay/JMStats_OrigJM_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment" ]
  then
-echo "../JMMV/JMStats_OrigJM_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment doesn't exit"
+echo "$PathWay/JMStats_OrigJM_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment doesn't exit"
  break
  fi
 
-JMStatsNoTextureFileName="../JMMV/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
-JMFrameStatsNoTextureFileName="../JMMV/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
-JMStatsOrigFileName="../JMMV/JMStats_OrigJM_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
-JMFrameStatsOrigFileName="../JMMV/JMStats_OrigJM_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
-SizeFile="../JMMV/Size_Orig_NOTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment.dat"
+JMStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
+JMFrameStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
+JMStatsOrigFileName="$PathWay/JMStats_OrigJM_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
+JMFrameStatsOrigFileName="$PathWay/JMStats_OrigJM_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
+SizeFile="$PathWay/Size_Orig_NOTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment.dat"
 
 else
 
- if ! [ -d ../JMMV/JMStats_NoTexture_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
+ if ! [ -d "$PathWay/JMStats_NoTexture_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment" ]
  then
- echo "../JMMV/JMStats_NoTexture_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrCommen doesn't exit"
+ echo "$PathWay/JMStats_NoTexture_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrCommen doesn't exit"
  break 
  fi
 
- if ! [ -d ../JMMV/JMStats_OrigJM_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
+ if ! [ -d "$PathWay/JMStats_OrigJM_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment" ]
  then
- echo "../JMMV/JMStats_OrigJM_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment doesn't exit"
+ echo "$PathWay/JMStats_OrigJM_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment doesn't exit"
  break
  fi
 
-JMStatsNoTextureFileName="../JMMV/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
-JMFrameStatsNoTextureFileName="../JMMV/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
-JMStatsOrigFileName="../JMMV/JMStats_OrigJM_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
-JMFrameStatsOrigFileName="../JMMV/JMStats_OrigJM_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
-SizeFile="../JMMV/Size_Orig_NOTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment.dat"
+JMStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
+JMFrameStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
+JMStatsOrigFileName="$PathWay/JMStats_OrigJM_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
+JMFrameStatsOrigFileName="$PathWay/JMStats_OrigJM_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
+SizeFile="$PathWay/Size_Orig_NOTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment.dat"
 fi
 
 
