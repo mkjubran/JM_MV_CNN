@@ -29,6 +29,21 @@ while ischar(tline)
     cnt2=cnt2+1;
 end
 fclose(fid);
+
+if (size(unique(SizeArray(:,1)),1)~=size(SizeArray,1))
+[Value,Index]=unique(SizeArray(:,1));
+SizeArray=SizeArray(Index,:)
+end
+SizeArray(end,1)=7;
+if (SizeArray(end,1)>(size(unique(SizeArray(:,1)),1)-1))
+    for i=0:SizeArray(end,1)
+        if isempty(find(i==SizeArray(:,1)))
+            fprintf('Video File Number %d is missing from the Size File\n',i);
+        end
+    end
+error('Missing files in the SizeArray or Size_File');
+end
+
 RateArray(:,[1,2])=(SizeArray(:,[3,4])./SizeArray(:,[2]))*FPS;
 RateArray(:,[3,4])=(SizeArray(:,[6,7])./SizeArray(:,[5]))*FPS;
 AvRateKbits=(sum(RateArray)/size(RateArray,1))/1000;
@@ -40,5 +55,4 @@ else
     fprintf('Average Rate for Original Bitstream = %3.3f Kbps\n',AvRateKbits(1));
     fprintf('Average Rate for Notexture Bitstream = %3.3f Kbps\n',AvRateKbits(3));
     fprintf('Average Rate for Motion Informtion = %3.3f Kbps\n',AvRateKbits(2));
-    fprintf('Saving Gain (No Texture / Original) = %3.3f%%\n',SavingGain);
-end
+    fprintf('Saving Gain (No Texture / Original) = %3.3f%%\n',
