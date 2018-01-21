@@ -199,7 +199,7 @@ then
 # if ! [ -d ../../JMMV/JMStats_OrigJM_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment ]
 # then
 # mkdir ../../JMMV/JMStats_OrigJM_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment
-3 fi
+#fi
 
 #mv -f JMMV_mbmap.bin ../../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin
 mv -f ../JM_MVX_NoTexture/bin/stats.dat ../../JMMV/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat
