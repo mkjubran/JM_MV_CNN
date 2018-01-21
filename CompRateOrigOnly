@@ -1,6 +1,8 @@
 #!/bin/bash
 #clear
 
+Dropping texture rate can't be computed from Original FrameStats files
+
 # Set initial default parameters
 enc_cfg=encoder_option2.cfg		#JM encoder configuration file
 QPISlice=20 			#value [0 - 51]
@@ -145,11 +147,11 @@ fi
 if [ $SetType = "train" ]
 then
  
- if ! [ -d "$PathWay/JMStats_NoTexture_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment" ]
- then
-echo "$PathWay/JMStats_NoTexture_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment doens't exit"
- break
- fi
+# if ! [ -d "$PathWay/JMStats_NoTexture_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment" ]
+# then
+# echo "$PathWay/JMStats_NoTexture_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment doens't exit"
+# break
+# fi
 
  if ! [ -d "$PathWay/JMStats_OrigJM_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment" ]
  then
@@ -157,19 +159,19 @@ echo "$PathWay/JMStats_OrigJM_Train$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRe
  break
  fi
 
-JMStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
-JMFrameStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
-JMStatsOrigFileName="$PathWay/JMStats_OrigJM_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
+#JMStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
+#JMFrameStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
+#JMStatsOrigFileName="$PathWay/JMStats_OrigJM_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
 JMFrameStatsOrigFileName="$PathWay/JMStats_OrigJM_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
 SizeFile="$PathWay/Size_Orig_NOTexture_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment.dat"
 
 else
 
- if ! [ -d "$PathWay/JMStats_NoTexture_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment" ]
- then
- echo "$PathWay/JMStats_NoTexture_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrCommen doesn't exit"
- break 
- fi
+# if ! [ -d "$PathWay/JMStats_NoTexture_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment" ]
+# then
+# echo "$PathWay/JMStats_NoTexture_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrCommen doesn't exit"
+# break 
+# fi
 
  if ! [ -d "$PathWay/JMStats_OrigJM_Test$TTSet"_"QP$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment" ]
  then
@@ -177,9 +179,9 @@ else
  break
  fi
 
-JMStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
-JMFrameStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
-JMStatsOrigFileName="$PathWay/JMStats_OrigJM_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
+#JMStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
+#JMFrameStatsNoTextureFileName="$PathWay/JMStats_NoTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
+#JMStatsOrigFileName="$PathWay/JMStats_OrigJM_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMStats_$FileNameP1.dat"
 JMFrameStatsOrigFileName="$PathWay/JMStats_OrigJM_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMFrameStats_$FileNameP1.dat"
 SizeFile="$PathWay/Size_Orig_NOTexture_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment.dat"
 fi
@@ -190,7 +192,9 @@ fi
 
 #%% check if the Stats files exist and not of zero size
 
-if [[ (! -s $JMStatsNoTextureFileName) || (! -s $JMFrameStatsNoTextureFileName) || (! -s $JMStatsOrigFileName) || (! -s $JMFrameStatsOrigFileName) || (! -e $JMStatsNoTextureFileName) || (! -e $JMFrameStatsNoTextureFileName) || (! -e $JMStatsOrigFileName) || (! -e $JMFrameStatsOrigFileName) ]]
+#if [[ (! -s $JMStatsNoTextureFileName) || (! -s $JMFrameStatsNoTextureFileName) || (! -s $JMStatsOrigFileName) || (! -s $JMFrameStatsOrigFileName) || (! -e $JMStatsNoTextureFileName) || (! -e $JMFrameStatsNoTextureFileName) || (! -e $JMStatsOrigFileName) || (! -e $JMFrameStatsOrigFileName) ]]
+
+if [[ (! -s $JMFrameStatsOrigFileName) || (! -e $JMFrameStatsOrigFileName) ]]
 then
 echo "one or more of the following files doesn't exit or of zero size: $JMStatsNoTextureFileName, $JMFrameStatsNoTextureFileName, $JMStatsOrigFileName, $JMFrameStatsOrigFileName"
 break
@@ -203,6 +207,9 @@ Size_Frame=0
 Size_Motion=0;
 Size_Frame_Total=0;
 Size_Motion_Total=0;
+Size_Coeff=0;
+Size_Coeff_Total=0;
+Size_Coeff_Frame=0;
 while IFS=$'\t' read -r JMSLine
 do
 #  printf 'f1: %s\n' "$JMSLine"
@@ -211,6 +218,16 @@ do
   then
     Size_Motion=$(echo ${JMSLine_array1[4]} | tr -d ' ')
     Size_Motion_Total=$((Size_Motion_Total + Size_Motion))
+
+    Size_Coeff_Frame=0; #reset due to new frame
+
+  fi
+
+  if [[ "${JMSLine_array1[0]}" == *"Coeffs"* ]]
+  then
+    Size_Coeff=$(echo ${JMSLine_array1[4]} | tr -d ' ')
+    Size_Coeff_Frame=$((Size_Coeff_Frame + Size_Coeff))
+    Size_Coeff_Total=$((Size_Coeff_Total + Size_Coeff))
   fi
 
   IFS='=,' read -r -a JMSLine_array2 <<< "$JMSLine"
@@ -225,7 +242,7 @@ do
     fi
     
     Size_Frame_Total=$((Size_Frame_Total + Size_Frame)) 
-#  echo $Frame $Size_Frame $Size_Frame_Total $Size_Motion_Total
+  #echo $Frame $Size_Frame $Size_Coeff_Frame $Size_Frame_Total $Size_Motion_Total $Size_Coeff_Total
   fi
 
 done < <(paste $JMFrameStatsOrigFileName)
@@ -235,45 +252,11 @@ Size_Frame_Total_Orig=$Size_Frame_Total;
 Size_Motion_Total_Orig=$Size_Motion_Total;
 #echo $Frame_Tolal_Orig $Size_Frame_Total_Orig $Size_Motion_Total_Orig
 
-
-## Parsing the Number of frames, size of bitstream, and size of motion info from the $JMFrameStatsNoTectureFileName
-Frame=0
-Size_Frame=0
-Size_Motion=0;
-Size_Frame_Total=0;
-Size_Motion_Total=0;
-while IFS=$'\t' read -r JMSLine
-do
-#  printf 'f1: %s\n' "$JMSLine"
-  IFS='|.' read -r -a JMSLine_array1 <<< "$JMSLine"
-  if [[ "${JMSLine_array1[0]}" == *"Motion"* ]]
-  then
-    Size_Motion=$(echo ${JMSLine_array1[4]} | tr -d ' ')
-    Size_Motion_Total=$((Size_Motion_Total + Size_Motion))
-  fi
-
-  IFS='=,' read -r -a JMSLine_array2 <<< "$JMSLine"
-  if [[ "${JMSLine_array2[0]}" == *"Frame"* ]]
-  then
-    Frame=$(echo ${JMSLine_array2[1]} | tr -d ' ') 
-    Size_Frame=$(echo ${JMSLine_array2[3]} | tr -d ' ')  
-
-    if [[ ( $Frame == '00000' ) && ( $Size_Frame_Total != 0 ) ]]
-    then
-      Size_Frame=$Size_First_Frame;
-    fi
-  
-    Size_Frame_Total=$((Size_Frame_Total + Size_Frame))   
-#    echo $Frame $Size_Frame $Size_Frame_Total $Size_Motion_Total 
-  fi
-done < <(paste $JMFrameStatsNoTextureFileName)
-
-Frame_Tolal_NoTexture=$Frame;
-Size_Frame_Total_NoTexture=$Size_Frame_Total;
-Size_Motion_Total_NoTexture=$Size_Motion_Total;
-#echo $Frame_Tolal_NoTexture $Size_Frame_Total_NoTexture $Size_Motion_Total_NoTexture
-
 #%%%%%%%%%% Check if directory exist otherwise make it, and then move the MV file to the directory after naming it appropriately"
+
+Frame_Tolal_NoTexture=$Frame_Tolal_Orig 
+Size_Frame_Total_NoTexture=$((Size_Frame_Total_Orig - Size_Coeff_Total))
+Size_Motion_Total_NoTexture=$Size_Motion_Total_Orig;
 
 echo $cnt1 $Frame_Tolal_Orig $Size_Frame_Total_Orig $Size_Motion_Total_Orig $Frame_Tolal_NoTexture $Size_Frame_Total_NoTexture $Size_Motion_Total_NoTexture $AbsFileName #>> $SizeFile 
 
