@@ -10,7 +10,7 @@ mbmapXxX=8			#value [8,16]
 SetType="test"			#value [0:Train Set,1: Test Set]
 TTSet=01			#UCF-101 Split Set [01 02 03]
 IndexFirstVideo=0		#Index of first video to be encoded [1,2, .... ]
-NumVideos=4			#Number of Video files to be encoded
+NumVideos=10			#Number of Video files to be encoded
 StrComment="_A"			#Comment to be added at the end of the directory that will be made (if doesn't exist) to contain the output MVs
 Overwrite=1			#Overwrite any exisitng MV files in the directory
 PathWay="../JMMV"
@@ -192,9 +192,13 @@ fi
 
 if [[ (! -s $JMStatsNoTextureFileName) || (! -s $JMFrameStatsNoTextureFileName) || (! -s $JMStatsOrigFileName) || (! -s $JMFrameStatsOrigFileName) || (! -e $JMStatsNoTextureFileName) || (! -e $JMFrameStatsNoTextureFileName) || (! -e $JMStatsOrigFileName) || (! -e $JMFrameStatsOrigFileName) ]]
 then
-echo "one or more of the following files doesn't exit or of zero size: $JMStatsNoTextureFileName, $JMFrameStatsNoTextureFileName, $JMStatsOrigFileName, $JMFrameStatsOrigFileName"
-break
-fi
+#echo "one or more of the following files doesn't exit or of zero size: $JMStatsNoTextureFileName, $JMFrameStatsNoTextureFileName, $JMStatsOrigFileName, $JMFrameStatsOrigFileName"
+
+echo "....... Stats file is missing for video $cnt1"
+echo 
+
+else
+
 
 
 ## Parsing the Number of frames, size of bitstream, and size of motion info from the $JMFrameStatsOrigFileName
@@ -338,6 +342,7 @@ Size_Motion_Total_Orig=$Size_Motion_Total;
 #%%%%%%%%%% Check if directory exist otherwise make it, and then move the MV file to the directory after naming it appropriately"
 
 echo $cnt1 $Frame_Tolal_Orig $Size_Frame_Total_Orig $Size_Motion_Total_Orig $Frame_Tolal_NoTexture $Size_Frame_Total_NoTexture $Size_Motion_Total_NoTexture $Mode0Copy $Mode116x16 $Mode216x8 $Mode38x16 $Mode48x8 $PSNRY $MSEY $AbsFileName >> $StatsFile 
+fi
 
 cnt1=$((cnt1 + cnt2))
 done < "$InputFileList"   #until end of FileNameList or NumVideos
