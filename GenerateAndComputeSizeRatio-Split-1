@@ -70,6 +70,7 @@ done
 # Hardcoded Parameters
 NumFrame=30000
 IndexLastVideo=$((IndexFirstVideo + NumVideos - 1))
+cntLoop=1; #To prevent loop
 #%%%%%%%%%% Read file list and identify the location of the video and the MV output file name
 if [ $SetType = "train" ] || [ $SetType = "Train" ];
 then
@@ -114,8 +115,8 @@ AbsFileName=$Directory"/"$FileNameP1.$FileNameP2
 #%%%%%%%%%% Show Processing Progress to keep track
 PerCompleted1=$((100*(cnt1-IndexFirstVideo+1)/(IndexLastVideo-IndexFirstVideo+1)))
 PerCompleted2=$((100*(cnt1-IndexFirstVideo+1)%(IndexLastVideo-IndexFirstVideo+1)))
-echo "($StrComment, $SetType) processing video file number $cnt1  [$IndexFirstVideo - $IndexLastVideo] ($AbsFileName) ... $PerCompleted1.$PerCompleted2% completed .. $(date +"%d-%m-%y %T")"
 
+echo "($StrComment, $SetType) processing video file number $cnt1  [$IndexFirstVideo - $IndexLastVideo] ($AbsFileName) ... $PerCompleted1.$PerCompleted2% completed .. $(date +"%d-%m-%y %T")"
 
 
 #%% check if the MV already made and stored or its size is zero
@@ -305,6 +306,46 @@ fi
 cd ..
 
 fi # end check if the files already exists
+
+## thiis is added to verify that the produced JMMV files are of the same size with a reference set of JMMV files (the tested reference is QP35)
+if [ $SetType = "train" ]
+then
+ IFS=' ' read -r -a JMSLine_array1 <<< $(ls -la $(find ../JMMV/JMMV_Train01_QPref_MVSR16_MVRes8_A/. -name JMMV_$FileNameP1.bin))
+ IFS=' ' read -r -a JMSLine_array2 <<< $(ls -la $(find ../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/. -name JMMV_$FileNameP1.bin))
+ if ! [[ "${JMSLine_array1[4]}" == "${JMSLine_array2[4]}" ]]
+ then 
+  if [ $cntLoop -le 1 ]
+  then
+   echo ${JMSLine_array1[4]}
+   echo ${JMSLine_array2[4]}
+   rm -rf ../JMMV/JMMV_Train$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin
+   cnt1=$((cnt1 - cnt2))
+   cntLoop=$(( cntLoop + 1 ))
+  else
+   cntLoop=0;
+   echo "The size of JMMV_$FileNameP1.bin doesn't match the size of the reference JMMVxxxxxxx.bin file"
+  fi
+ fi
+
+else
+
+ IFS=' ' read -r -a JMSLine_array1 <<< $(ls -la $(find ../JMMV/JMMV_Test01_QPref_MVSR16_MVRes8_A/. -name JMMV_$FileNameP1.bin))
+ IFS=' ' read -r -a JMSLine_array2 <<< $(ls -la $(find ../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/. -name JMMV_$FileNameP1.bin))
+ if ! [[ "${JMSLine_array1[4]}" == "${JMSLine_array2[4]}" ]]
+ then 
+  if [ $cntLoop -le 1 ]
+  then
+   rm -rf ../JMMV/JMMV_Test$TTSet"_QP"$QPISlice"_MVSR"$SearchRange"_MVRes"$mbmapXxX$StrComment/JMMV_$FileNameP1.bin
+   cnt1=$((cnt1 - cnt2))
+   cntLoop=$(( cntLoop + 1 ))
+  else
+   cntLoop=0;
+   echo "The size of JMMV_$FileNameP1.bin doesn't match the size of the reference JMMVxxxxxxx.bin file"
+  fi
+ fi
+fi
+
+
 cnt1=$((cnt1 + cnt2))
 done < "$InputFileList"   #until end of FileNameList or NumVideos
 
