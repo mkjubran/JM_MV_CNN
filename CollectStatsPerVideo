@@ -3,14 +3,14 @@
 
 # Set initial default parameters
 enc_cfg=encoder_option2.cfg		#JM encoder configuration file
-QPISlice=20 			#value [0 - 51]
-QPPSlice=20 			#value [0 - 51]
+QPISlice=35 			#value [0 - 51]
+QPPSlice=35 			#value [0 - 51]
 SearchRange=16			#value [16,32,64]
 mbmapXxX=8			#value [8,16]
-SetType="test"			#value [0:Train Set,1: Test Set]
+SetType="train"			#value [0:Train Set,1: Test Set]
 TTSet=01			#UCF-101 Split Set [01 02 03]
 IndexFirstVideo=0		#Index of first video to be encoded [1,2, .... ]
-NumVideos=10			#Number of Video files to be encoded
+NumVideos=3			#Number of Video files to be encoded
 StrComment="_A"			#Comment to be added at the end of the directory that will be made (if doesn't exist) to contain the output MVs
 Overwrite=1			#Overwrite any exisitng MV files in the directory
 PathWay="../JMMV"
@@ -105,7 +105,7 @@ fi
 if [[ ( $Overwrite -eq 1 ) && (-e $StatsFile) ]]
 then
 rm -f $StatsFile
-echo "Video# Frames_Orig  Size_Orig  Size_Motion_Orig  Frames_NoTexture  Size_NoTexture Size_Motion_NoTexture Mode0Copy Mode116x16 Mode216x8 Mode38x16 Mode48x8 PSNRY MSEY File_Name" >> $StatsFile
+echo "Video# Frames_Orig  Size_Orig  Size_Motion_Orig  Frames_NoTexture  Size_NoTexture Size_Motion_NoTexture Mode0Copy Mode1(16x16) Mode2(16x8) Mode3(8x16) Mode4(8x8) Mode0Copy_Motion Mode1(16x16)_Motion Mode2(16x8)_Motion Mode3(8x16)_Motion Mode4(8x8)_Motion PSNRY MSEY File_Name" >> $StatsFile
 fi
 
 
@@ -286,13 +286,16 @@ Mode116x16=0;
 Mode216x8=0;
 Mode38x16=0;
 Mode48x8=0;
+
+Mode0Copy_Motion=0;
+Mode116x16_Motion=0;
+Mode216x8_Motion=0;
+Mode38x16_Motion=0;
+Mode48x8_Motion=0;
+
 PSNRY=0;
 MSEY=0;
 
-Size_Frame=0
-Size_Motion=0;
-Size_Frame_Total=0;
-Size_Motion_Total=0;
 while IFS=$'\t' read -r JMSLine
 do
 #  printf 'f1: %s\n' "$JMSLine"
@@ -300,27 +303,32 @@ do
   if [[ ("${JMSLine_array3[0]}" == *"Mode"*) && ("${JMSLine_array3[1]}" == *"0"*) && ("${JMSLine_array3[2]}" == *"(copy)"*) ]]
   then
     Mode0Copy=$(echo ${JMSLine_array3[3]} | tr -d ' ')
+    Mode0Copy_Motion=$(echo ${JMSLine_array3[4]} | tr -d ' ')
   fi
 
   if [[ ("${JMSLine_array3[0]}" == *"Mode"*) && ("${JMSLine_array3[1]}" == *"1"*) && ("${JMSLine_array3[2]}" == *"(16x16)"*) ]]
   then
     Mode116x16=$(echo ${JMSLine_array3[3]} | tr -d ' ')
+    Mode116x16_Motion=$(echo ${JMSLine_array3[4]} | tr -d ' ')
   fi
 
   if [[ ("${JMSLine_array3[0]}" == *"Mode"*) && ("${JMSLine_array3[1]}" == *"2"*) && ("${JMSLine_array3[2]}" == *"(16x8)"*) ]]
   then
     Mode216x8=$(echo ${JMSLine_array3[3]} | tr -d ' ')
+    Mode216x8_Motion=$(echo ${JMSLine_array3[4]} | tr -d ' ')
   fi
 
 
   if [[ ("${JMSLine_array3[0]}" == *"Mode"*) && ("${JMSLine_array3[1]}" == *"3"*) && ("${JMSLine_array3[2]}" == *"(8x16)"*) ]]
   then
     Mode38x16=$(echo ${JMSLine_array3[3]} | tr -d ' ')
+    Mode38x16_Motion=$(echo ${JMSLine_array3[4]} | tr -d ' ')
   fi
 
   if [[ ("${JMSLine_array3[0]}" == *"Mode"*) && ("${JMSLine_array3[1]}" == *"4"*) && ("${JMSLine_array3[2]}" == *"(8x8)"*) ]]
   then
     Mode48x8=$(echo ${JMSLine_array3[3]} | tr -d ' ')
+    Mode48x8_Motion=$(echo ${JMSLine_array3[4]} | tr -d ' ')
   fi
 
   if [[ ("${JMSLine_array3[0]}" == *"Y"*) && ("${JMSLine_array3[2]}" == *"PSNR"*) && ("${JMSLine_array3[6]}" == *"MSE"*) ]]
@@ -332,16 +340,10 @@ done < <(paste $JMStatsOrigFileName)
 
 #echo $cnt1 $Mode0Copy $Mode116x16 $Mode216x8 $Mode38x16 $Mode48x8 $PSNRY $MSEY
 
-Frame_Tolal_Orig=$Frame;
-Size_Frame_Total_Orig=$Size_Frame_Total;
-Size_Motion_Total_Orig=$Size_Motion_Total;
-#echo $Frame_Tolal_Orig $Size_Frame_Total_Orig $Size_Motion_Total_Orig
-
-
 
 #%%%%%%%%%% Check if directory exist otherwise make it, and then move the MV file to the directory after naming it appropriately"
 
-echo $cnt1 $Frame_Tolal_Orig $Size_Frame_Total_Orig $Size_Motion_Total_Orig $Frame_Tolal_NoTexture $Size_Frame_Total_NoTexture $Size_Motion_Total_NoTexture $Mode0Copy $Mode116x16 $Mode216x8 $Mode38x16 $Mode48x8 $PSNRY $MSEY $AbsFileName >> $StatsFile 
+echo $cnt1 $Frame_Tolal_Orig $Size_Frame_Total_Orig $Size_Motion_Total_Orig $Frame_Tolal_NoTexture $Size_Frame_Total_NoTexture $Size_Motion_Total_NoTexture $Mode0Copy $Mode116x16 $Mode216x8 $Mode38x16 $Mode48x8 $Mode0Copy_Motion $Mode116x16_Motion $Mode216x8_Motion $Mode38x16_Motion $Mode48x8_Motion $PSNRY $MSEY $AbsFileName >> $StatsFile 
 fi
 
 cnt1=$((cnt1 + cnt2))
