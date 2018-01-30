@@ -68,7 +68,7 @@ done
 #### End Parsing Command Line Parameters
 
 # Hardcoded Parameters
-NumFrame=5
+NumFrame=30000
 IndexLastVideo=$((IndexFirstVideo + NumVideos - 1))
 cntLoop=1; #To prevent loop
 #%%%%%%%%%% Read file list and identify the location of the video and the MV output file name
