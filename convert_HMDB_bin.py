@@ -37,7 +37,7 @@ for file in finput:
     file_header = os.path.basename(file).split('.')[0]
 
     #get label index
-    val = [value for key, value in label_dict.iteritems() if key.lower() in file_header.lower()]
+    val = [value for key, value in label_dict.items() if key.lower() in file_header.lower()]
     
     if not val:
         continue
