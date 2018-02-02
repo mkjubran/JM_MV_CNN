@@ -44,7 +44,6 @@ for file in finput:
     #get label index
     label_idx = int(label_dict[file_header.lower()])
 
-    print (label_idx)
 
     with open(file, 'rb') as f:
         # read rest of file
@@ -63,8 +62,14 @@ for file in finput:
 
     frame_bytes = 16 + 1 + (height * width)
     bin_file = os.path.join(FLAGS.out_dir, file_header + '.bin')
+    
+    
+    #check if file already exists and delete if so
+    if os.path.exists(bin_file):
+        print('File exists in %s: Overwriting' % bin_file)
+        os.remove(bin_file)
 
-    print(file_header, height, width, len(data))
+    print(file_header, height, width, len(data), label_idx)
 
     # label to bytes
     label = struct.pack('i', label_idx)
@@ -91,15 +96,14 @@ for file in finput:
 
         # motion vector
         format = ('%ib' % height*width)
-        mv_raw = struct.unpack(format, data[i+17:i+frame_bytes])
-        #mv_raw = np.asarray(struct.unpack(format, data[i+9:i+frame_bytes]))
+        mv_raw = np.asarray(struct.unpack(format, data[i+17:i+frame_bytes]))
+        
+        mv_bytes = data[i+17:i+frame_bytes]
 
-        #label to bytes
-        label = struct.pack('i', label_idx)
-
-        if frame_type == 'P':
+        # frame_type == 'P':
+        if True: 
             with open(bin_file, 'ab') as b:
-                bytes = data[i+8:i+16]+label+data[i+16:i+17]+data[i+17:i+frame_bytes]
+                bytes = mv_bytes
                 b.write(bytes)
             count += 1
 
