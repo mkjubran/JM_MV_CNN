@@ -214,12 +214,11 @@ else
 
 ## Parsing the Number of frames, size of bitstream, and size of motion info from the $JMFrameStatsOrigFileName
 cnt=0;
-while IFS=$'\t' read -r JMSLine
-do
 FrameOrig=();
 Size_FrameOrig=();
 Size_MotionOrig=();
-
+while IFS=$'\t' read -r JMSLine
+do
 #  printf 'f1: %s\n' "$JMSLine"
   IFS='|.' read -r -a JMSLine_array1 <<< "$JMSLine"
   if [[ "${JMSLine_array1[0]}" == *"Motion"* ]]
@@ -246,12 +245,11 @@ echo ${FrameOrig[cnt]} ${Size_MotionOrig[*]} $AbsFileName >> $RMotionOrigFile
 
 ## Parsing the Number of frames, size of bitstream, and size of motion info from the $JMFrameStatsOrigFileName
 cnt=0;
-while IFS=$'\t' read -r JMSLine
-do
 FrameNoT=();
 Size_FrameNoT=();
 Size_MotionNoT=();
-
+while IFS=$'\t' read -r JMSLine
+do
 #  printf 'f1: %s\n' "$JMSLine"
   IFS='|.' read -r -a JMSLine_array1 <<< "$JMSLine"
   if [[ "${JMSLine_array1[0]}" == *"Motion"* ]]
