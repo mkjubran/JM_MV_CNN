@@ -216,6 +216,10 @@ else
 cnt=0;
 while IFS=$'\t' read -r JMSLine
 do
+FrameOrig=();
+Size_FrameOrig=();
+Size_MotionOrig=();
+
 #  printf 'f1: %s\n' "$JMSLine"
   IFS='|.' read -r -a JMSLine_array1 <<< "$JMSLine"
   if [[ "${JMSLine_array1[0]}" == *"Motion"* ]]
@@ -244,6 +248,10 @@ echo ${FrameOrig[cnt]} ${Size_MotionOrig[*]} $AbsFileName >> $RMotionOrigFile
 cnt=0;
 while IFS=$'\t' read -r JMSLine
 do
+FrameNoT=();
+Size_FrameNoT=();
+Size_MotionNoT=();
+
 #  printf 'f1: %s\n' "$JMSLine"
   IFS='|.' read -r -a JMSLine_array1 <<< "$JMSLine"
   if [[ "${JMSLine_array1[0]}" == *"Motion"* ]]
