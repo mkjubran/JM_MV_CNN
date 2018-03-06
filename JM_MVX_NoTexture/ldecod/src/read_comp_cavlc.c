@@ -532,6 +532,8 @@ void read_coeff_4x4_CAVLC_444 (Macroblock *currMB,
   dP = &(currSlice->partArr[partMap[dptype]]);
   currStream = dP->bitstream;  
 
+/* //Commented by Jubran to avoid decoding an empty bitstream  Jubran - March,2018
+
   if (!cdc)
   {    
     // luma or chroma AC    
@@ -571,11 +573,22 @@ void read_coeff_4x4_CAVLC_444 (Macroblock *currMB,
     numtrailingones =  currSE.value2;
   }
 
+*/ //end of commenting by Jubran - March,2018
+
+
+///* added by Jubran to tell the deoder that the coeff received even without being transmitted is 0;
+      numtrailingones =  0;
+      currSE.len=1;
+// */ //finish adding
+
+
   memset(levarr, 0, max_coeff_num * sizeof(int));
   memset(runarr, 0, max_coeff_num * sizeof(int));
 
   numones = numtrailingones;
   *number_coefficients = numcoeff;
+
+/* commented by Jubran to avoid trying to decode an empty coeff bitstream - March,2018
 
   if (numcoeff)
   {
@@ -684,6 +697,8 @@ void read_coeff_4x4_CAVLC_444 (Macroblock *currMB,
     }
     runarr[i] = zerosleft;    
   } // if numcoeff
+
+*///end of comment by jubran - March, 2018
 }
 
 /*!
