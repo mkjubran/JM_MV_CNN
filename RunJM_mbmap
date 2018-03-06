@@ -1,0 +1,65 @@
+#!/bin/bash
+clear
+
+#QPISlice=$1
+#QPPSlice=$1
+#SearchRange=$2
+#mbmapXxX=$3
+#mbmapInterpolation=$4
+#InputFile=$5
+
+echo %#######################################################################
+echo MV QP=$1 , Search Range=$2, Spatial Interpoltion=$3, MV Resolution=$4
+echo %#######################################################################
+
+#%%%%%%%%%% deleting .264 videos from previous run
+rm ./JM_MVX/bin/vid/Boxing_JM_Option1.264
+
+#%%%%%%%%%% deleting estracted MVs from previous run
+rm ./mbmap/mv_Option1.bin
+rm ./mbmap_NoInterpolation/mv_Option1.bin
+
+#%%%%%%%%%% encode and decode using Original JM to encode and decode (from yuv to 264)
+#%%%%%% Option 1
+cd ./JM_MVX_NoTexture/bin
+rm mv.bin
+./lencod.exe -f encoder_option4.cfg -p InputFile="./vid/"$5 -p QPISlice=$1 -p QPPSlice=$1 -p SearchRange=$2 -p Verbose=0 -p OutputFile="./vid/Boxing_JM_Option1.264"
+./ldecod.exe -f decoder.cfg -p InputFile="./vid/Boxing_JM_Option1.264" -p OutputFile="./vid/Boxing_decoded.yuv"
+cp mv.bin ../../mbmap/mv_Option1_Dec.bin
+mv mv.bin ../../mbmap_NoInterpolation/mv_Option1_Dec.bin
+
+#%%%%%%%%%% deleteing old processed MV files
+if [ $3 -eq 1 ]
+then
+ cd ../../mbmap
+ echo ../../mbmap
+else
+echo "Not interested for noInterpolation of MVs";
+exit -1;
+
+# cd ../../mbmap_NoInterpolation
+# echo ../../mbmap_NoInterpolation
+fi
+
+rm mv_Option1.bin
+
+#%%%%%%%%%% Extracting the MVs
+
+if [ $4 -eq 4 ] || [ $4 -eq 8 ]
+ then
+ ./mbmap -h 240 -w 320 -$4 -o mv_Option1.bin mv_Option1_Dec.bin
+ else if [ $4 -eq 16 ]
+  then
+   ./mbmap -h 240 -w 320 -o mv_Option1.bin mv_Option1_Dec.bin
+  else
+  echo "mbmap: MV Reso;ution is not identified"
+  exit -1;
+ fi
+fi
+
+
+
+#%%%%%%%%%% copying the MVs to the directory to be processed by matlab
+#mv ./mv_Option1.bin ../../../UCLResearch/VisualizeMVX/MV_QP_$1_MVSearchRange_$2_SpatialInterpoltion_$3_MVResolution_$4.bin
+mv ./mv_Option1.bin ../../MVbins/MV_$5_QP_$1_MVSearchRange_$2_SpatialInterpoltion_$3_MVResolution_$4.bin
+

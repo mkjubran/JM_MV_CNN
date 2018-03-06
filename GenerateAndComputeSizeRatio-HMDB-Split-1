@@ -146,7 +146,6 @@ fi
 
 rm ./vid/JMInputVideo.yuv
 ffmpeg -loglevel panic -i '../../../../HMDB/'$AbsFileName -vcodec rawvideo -pix_fmt yuv420p './vid/JMInputVideo.yuv' > /dev/null
-#ffmpeg -loglevel panic -i '../../../../HMDB/'$AbsFileName -vcodec rawvideo -pix_fmt yuv444p './vid/JMInputVideo.yuv' > /dev/null
 cp -f ./vid/JMInputVideo.yuv ../../JM_MVX/bin/vid/ > /dev/null
 
 

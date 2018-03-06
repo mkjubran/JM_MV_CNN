@@ -1,0 +1,52 @@
+#!/bin/bash
+clear
+
+rm -rf './JM_MVX_NoTexture/bin/vid/JMInputVideo.yuv'
+rm -rf './JM_MVX/bin/vid/JMInputVideo.yuv'
+
+ffmpeg -loglevel panic -i $1 -vcodec rawvideo -pix_fmt yuv420p './JM_MVX_NoTexture/bin/vid/JMInputVideo.yuv'
+cp './JM_MVX_NoTexture/bin/vid/JMInputVideo.yuv' './JM_MVX/bin/vid/JMInputVideo.yuv' 
+cd ./JM_MVX_NoTexture/bin/
+rm -rf "./vid/JMEncodedVideo.264"
+rm -rf "./vid/JMDecodedVideo.yuv"
+./lencod.exe -f encoder_option2.cfg -p InputFile="./vid/JMInputVideo.yuv" -p OutputFile="./vid/JMEncodedVideo.264" -p QPSPSlice=0 -p QPSPSlice=0
+./ldecod.exe -f decoder.cfg -p InputFile="./vid/JMEncodedVideo.264" -p OutputFile="./vid/JMDecodedVideo.yuv"
+mv mv.bin ../../mbmap/.
+cd ../../mbmap
+./mbmap -h 240 -w 320 -8 -o mv_mapped.bin mv.bin
+mv ./mv_mapped.bin /media/sf_VisualizeMVX/Rate_Accuracy/VideoPaperJRNL/playmv/mv_NoTexture_mapped420.bin
+cd ..
+
+rm -rf './JM_MVX_NoTexture/bin/vid/JMInputVideo.yuv'
+rm -rf './JM_MVX/bin/vid/JMInputVideo.yuv'
+ffmpeg -loglevel panic -i $1 -vcodec rawvideo -pix_fmt yuv444p './JM_MVX_NoTexture/bin/vid/JMInputVideo.yuv'
+cp -f './JM_MVX_NoTexture/bin/vid/JMInputVideo.yuv' './JM_MVX/bin/vid/JMInputVideo.yuv'
+cd ./JM_MVX_NoTexture/bin/
+rm -rf "./vid/JMEncodedVideo.264"
+rm -rf "./vid/JMDecodedVideo.yuv"
+./lencod.exe -f encoder_option2_YUV444.cfg -p InputFile="./vid/JMInputVideo.yuv" -p OutputFile="./vid/JMEncodedVideo.264" -p QPSPSlice=0 -p QPSPSlice=0
+./ldecod.exe -f decoder.cfg -p InputFile="./vid/JMEncodedVideo.264" -p OutputFile="./vid/JMDecodedVideo.yuv"
+mv mv.bin ../../mbmap/.
+cd ../../mbmap
+./mbmap -h 240 -w 320 -8 -o mv_mapped.bin mv.bin
+mv ./mv_mapped.bin /media/sf_VisualizeMVX/Rate_Accuracy/VideoPaperJRNL/playmv/mv_NoTexture_mapped444.bin
+
+
+
+
+
+#cd JM_MVX/bin/
+#rm -rf "./vid/JMEncodedVideo.264"
+#rm -rf "./vid/JMDecodedVideo.yuv"
+##./lencod.exe -f encoder_option2.cfg -p InputFile="./vid/JMInputVideo.yuv" -p OutputFile="./vid/JMEncodedVideo.264" -p QPSPSlice=0 -p QPSPSlice=0
+#./lencod.exe -f encoder_option2_YUV444.cfg -p InputFile="./vid/JMInputVideo.yuv" -p OutputFile="./vid/JMEncodedVideo.264" -p QPSPSlice=0 -p QPSPSlice=0
+
+
+#./ldecod.exe -f decoder.cfg -p InputFile="./vid/JMEncodedVideo.264" -p OutputFile="./vid/JMDecodedVideo.yuv"
+#mv mv.bin ../../mbmap/.
+
+#cd ../../mbmap
+#./mbmap -h 240 -w 320 -8 -o mv_mapped.bin mv.bin
+
+#mv ./mv_mapped.bin /media/sf_VisualizeMVX/Rate_Accuracy/VideoPaperJRNL/playmv/.
+
