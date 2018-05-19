@@ -146,7 +146,7 @@ break
 fi
 
 rm ./vid/JMInputVideo.yuv
-ffmpeg -loglevel panic -i '../../../../UCF-101/'$AbsFileName -vcodec rawvideo -pix_fmt yuv444p './vid/JMInputVideo.yuv' > /dev/null
+ffmpeg -loglevel panic -i '../../../../UCF-101/'$AbsFileName -vf scale=320:240 -vcodec rawvideo -pix_fmt yuv444p './vid/JMInputVideo.yuv' > /dev/null
 cp -f ./vid/JMInputVideo.yuv ../../JM_MVX/bin/vid/ > /dev/null
 
 if [ ! -e "./vid/JMInputVideo.yuv" ] ; then
