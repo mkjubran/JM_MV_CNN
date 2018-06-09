@@ -58,15 +58,17 @@ int main(int argc, const char* argv[])
 		mb.dx    = *(buffer_++) ; mb.dy   = *(buffer_++) ;
 		//fprintf(stdout ,"total_bytes: %d, bytes_read: %d\n", lSize, bytes_read) ; 
 		//fprintf(stdout ,"frame: %d, type: %d, x:%d, y:%d, dx: %d. dy:%d\n", mb.frame, mb.type, mb.x, mb.y, mb.dx, mb.dy) ; 
+                //fprintf(stdout ,"Frame%d\n", index);
 
 		same_frame = (mb.frame == last_frame) ;
 		bytes_read = bytes_read + sizeof(JMacroBlock) ; 
 		mbvec.push_back(mb) ;
-		last_frame = mb.frame ; }
+		last_frame = mb.frame ;}
 
+                //fprintf(stdout ,"frame: %d ... %d\n", mb.frame,last_frame) ;
 		frame.setup(mbvec) ; 
 		frame.smooth() ; 
-		frame.print(fout)  ;
+		frame.print(fout,last_frame)  ;
 	}
 
         free (buffer) ; fclose(fout) ;

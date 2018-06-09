@@ -86,7 +86,7 @@ void Frame::setup(vector<JMacroBlock>& avmv)
 	}
 }
 
-void Frame::print(FILE *fout)
+void Frame::print(FILE *fout, int FNum)
         {
 
 	size_t mbsize  = GRID_8X8 ? 8:16  ;
@@ -95,11 +95,12 @@ void Frame::print(FILE *fout)
         int ydim = (height/mbsize)*2 ; int xdim  = width/mbsize ;
 
         // Write frame header..
-        fwrite(&index, sizeof(int), 1, fout) ;
-        fwrite(&index, sizeof(int), 1, fout) ;
+        fwrite(&FNum, sizeof(int), 1, fout) ;
+        fwrite(&FNum, sizeof(int), 1, fout) ;
         fwrite(&xdim, sizeof(int), 1, fout) ;
         fwrite(&ydim, sizeof(int), 1, fout) ;
         fwrite(&type, sizeof(char), 1, fout) ;
+        //fprintf(stdout ,"Frame%d\n", FNum);
 //	fprintf(stdout, "Printing frame -- xdim: %d, ydim: %d, width: %d, height: %d\n", xdim, ydim, width, FRAME_HEIGHT) ;
 	for (int i = 0 ; i < ydim/2 ; i++){
         	fwrite(&mv[0][i], sizeof(signed char), xdim , fout) ; }

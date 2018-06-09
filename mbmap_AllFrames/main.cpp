@@ -42,7 +42,7 @@ int main(int argc, const char* argv[])
         result = fread(buffer,sizeof(int),lSize/sizeof(int),pFile); fclose (pFile) ;
         if (result != lSize/sizeof(int)) {fputs ("Reading Error\n",stderr); exit (3);}
 
-	Frame frame ; int last_frame = 0 ; int inc_frame = 0 ; int zero_mv_frame_num=0;
+	Frame frame ; int last_frame = -1 ; int inc_frame = 0 ; int zero_mv_frame_num=0;
 	frame.width = FRAME_WIDTH ; frame.height = FRAME_HEIGHT ;
 	frame.type = 0 ; 
 	
@@ -66,25 +66,26 @@ int main(int argc, const char* argv[])
 		mbvec.push_back(mb) ;
 		last_frame = mb.frame ; }
 
-		//fprintf(stdout ,"frame: %d [%d]\n", mb.frame,inc_frame) ;  //added by jubran
-		//fprintf(stdout ,"frame: %d, type: %d, x:%d, y:%d, dx: %d. dy:%d\n", mb.frame-inc_frame, mb.type, mb.x, mb.y, mb.dx, mb.dy) ; //added by jubran
-		frame.setup(mbvec) ; 
-		frame.smooth() ; 
-		frame.print(fout)  ;
-
-		while ( cnt <  (inc_frame -1) ) //added by jubran - star from this line
+                while ( cnt <  (inc_frame -1) ) //added by jubran - star from this line
 		{
-		mbvec.clear() ;
+		//mbvec.clear() ;
 		zero_mv_frame_num=mb.frame - inc_frame + cnt + 1;
 		//fprintf(stdout ,"No MV Frame: %d\n", zero_mv_frame_num) ;
 		cnt++;
 
-		mb.frame=zero_mv_frame_num;
-		mb.type=0;mb.x=0;mb.y=0;mb.dx=0;mb.dy=0;
+		//mb.frame=zero_mv_frame_num;
+		//mb.type=0;mb.x=0;mb.y=0;mb.dx=0;mb.dy=0;
 		//fprintf(stdout ,"0000000000000000 Zero MV frame: %d, type: %d, x:%d, y:%d, dx: %d. dy:%d\n", mb.frame, mb.type, mb.x, mb.y, mb.dx, mb.dy) ; //added by jubran
 		frame.setup_zero(mbvec) ;
-		frame.print(fout)  ;
+		frame.print_zero(fout,zero_mv_frame_num)  ;
 		}
+
+		//fprintf(stdout ,"frame: %d [%d]\n", mb.frame,inc_frame) ;  //added by jubran
+		//fprintf(stdout ,"frame: %d, type: %d, x:%d, y:%d, dx: %d. dy:%d\n", mb.frame-inc_frame, mb.type, mb.x, mb.y, mb.dx, mb.dy) ; //added by jubran
+		frame.setup(mbvec) ; 
+		frame.smooth() ; 
+		frame.print(fout,last_frame)  ;
+
    		inc_frame=0;cnt=0;             //added by jubran - ... end
 	}
 

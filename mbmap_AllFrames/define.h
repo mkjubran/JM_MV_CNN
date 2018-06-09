@@ -57,9 +57,10 @@ int  pts ;  int index ; char type ;
 int width ; int height ; 
 
 void setup(vector<JMacroBlock>& ) ; 
-void print(FILE*) ; 
+void print(FILE*,int FNum) ; 
 void smooth() ; 
 void setup_zero(vector<JMacroBlock>& ) ;
+void print_zero(FILE*,int FNum) ; 
 public:
 Frame() ; 
 
