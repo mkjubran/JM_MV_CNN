@@ -52,7 +52,7 @@ int main(int argc, const char* argv[])
 		mbvec.clear() ;
 		bool same_frame = true ;
 		fprintf(stdout, "."); 
-		while(same_frame){
+		while((same_frame)) {
 		mb.frame = *(buffer_++) ; mb.type = *(buffer_++) ;
 		mb.x     = *(buffer_++) ; mb.y    = *(buffer_++) ;
 		mb.dx    = *(buffer_++) ; mb.dy   = *(buffer_++) ;
@@ -65,8 +65,8 @@ int main(int argc, const char* argv[])
 		bytes_read = bytes_read + sizeof(JMacroBlock) ; 
 		mbvec.push_back(mb) ;
 		last_frame = mb.frame ; }
-
-                while ( cnt <  (inc_frame -1) ) //added by jubran - star from this line
+                //fprintf(stdout ,"last_frame: %d, mb.frame=%d, inc_frame=%d\n", last_frame,mb.frame,inc_frame) ;
+                while (( cnt <  (inc_frame - 1) )) //added by jubran - star from this line
 		{
 		//mbvec.clear() ;
 		zero_mv_frame_num=mb.frame - inc_frame + cnt + 1;
