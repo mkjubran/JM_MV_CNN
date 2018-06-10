@@ -65,10 +65,10 @@ int main(int argc, const char* argv[])
 		mbvec.push_back(mb) ;
 		last_frame = mb.frame ;}
 
-                //fprintf(stdout ,"frame: %d ... %d\n", mb.frame,last_frame) ;
 		frame.setup(mbvec) ; 
 		frame.smooth() ; 
-		frame.print(fout,last_frame)  ;
+                //fprintf(stdout ,"frame: %d ... %d\n", mb.frame,last_frame) ;
+		frame.print(fout,mb.frame)  ;
 	}
 
         free (buffer) ; fclose(fout) ;

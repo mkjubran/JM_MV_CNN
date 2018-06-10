@@ -62,11 +62,19 @@ int main(int argc, const char* argv[])
 		same_frame = (mb.frame == last_frame) ;
 		inc_frame = mb.frame - last_frame; //added by jubran - strart from this line
 
-		bytes_read = bytes_read + sizeof(JMacroBlock) ; 
+		bytes_read = bytes_read + sizeof(JMacroBlock) ;
+                //fprintf(stdout ,"MB:last_frame: %d, mb.frame=%d\n", last_frame,mb.frame) ; 
 		mbvec.push_back(mb) ;
 		last_frame = mb.frame ; }
                 //fprintf(stdout ,"last_frame: %d, mb.frame=%d, inc_frame=%d\n", last_frame,mb.frame,inc_frame) ;
-                while (( cnt <  (inc_frame - 1) )) //added by jubran - star from this line
+		//fprintf(stdout ,"frame: %d [%d]\n", mb.frame,inc_frame) ;  //added by jubran
+		//fprintf(stdout ,"frame: %d, type: %d, x:%d, y:%d, dx: %d. dy:%d\n", mb.frame-inc_frame, mb.type, mb.x, mb.y, mb.dx, mb.dy) ; //added by jubran
+		frame.setup(mbvec) ; 
+		frame.smooth() ; 
+                fprintf(stdout ,"last_frame: %d, mb.frame=%d\n", last_frame,mb.frame) ;
+		frame.print(fout,last_frame)  ;
+
+                while (( cnt <  (inc_frame - 1) )) //added by jubran - start from this line
 		{
 		//mbvec.clear() ;
 		zero_mv_frame_num=mb.frame - inc_frame + cnt + 1;
@@ -77,14 +85,9 @@ int main(int argc, const char* argv[])
 		//mb.type=0;mb.x=0;mb.y=0;mb.dx=0;mb.dy=0;
 		//fprintf(stdout ,"0000000000000000 Zero MV frame: %d, type: %d, x:%d, y:%d, dx: %d. dy:%d\n", mb.frame, mb.type, mb.x, mb.y, mb.dx, mb.dy) ; //added by jubran
 		frame.setup_zero(mbvec) ;
+                //fprintf(stdout ,"missed: last_frame: %d, mb.frame=%d\n", last_frame,zero_mv_frame_num) ;
 		frame.print_zero(fout,zero_mv_frame_num)  ;
 		}
-
-		//fprintf(stdout ,"frame: %d [%d]\n", mb.frame,inc_frame) ;  //added by jubran
-		//fprintf(stdout ,"frame: %d, type: %d, x:%d, y:%d, dx: %d. dy:%d\n", mb.frame-inc_frame, mb.type, mb.x, mb.y, mb.dx, mb.dy) ; //added by jubran
-		frame.setup(mbvec) ; 
-		frame.smooth() ; 
-		frame.print(fout,last_frame)  ;
 
    		inc_frame=0;cnt=0;             //added by jubran - ... end
 	}
