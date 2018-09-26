@@ -61,6 +61,10 @@ int main(int argc, const char* argv[])
                 //fprintf(stdout ,"Frame%d\n", index);
 
 		same_frame = (mb.frame == last_frame) ;
+                //if ((mb.frame - last_frame)>1)
+                //{
+                // fprintf(stdout ,"frame: %d ... %d\n", mb.frame,last_frame) ;
+                //}
 		bytes_read = bytes_read + sizeof(JMacroBlock) ; 
 		mbvec.push_back(mb) ;
 		last_frame = mb.frame ;}

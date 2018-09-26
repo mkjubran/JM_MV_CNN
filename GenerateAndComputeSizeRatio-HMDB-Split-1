@@ -14,6 +14,8 @@ NumVideos=1			#Number of Video files to be encoded
 StrComment="_A"			#Comment to be added at the end of the directory that will be made (if doesn't exist) to contain the output MVs
 Overwrite=0			#Overwrite any exisitng MV files in the directory
 
+PathSourceVid='/home/mohammad/Downloads/HMDB/'
+
 ## Parsing Command Line Parameters
 ## cmd exmaple: ./Generate-Split-1 -ecfg=encoder.cfg -qp=25 -sr=16 -res=4 -settype=test sset=01 -ifvid=1 -nvid=5 -strcom=Opt1a
 for i in "$@"
@@ -71,15 +73,16 @@ done
 NumFrame=30000
 IndexLastVideo=$((IndexFirstVideo + NumVideos - 1))
 cntLoop=1; #To prevent loop
+
 #%%%%%%%%%% Read file list and identify the location of the video and the MV output file name
 if [ $SetType = "train" ] || [ $SetType = "Train" ];
 then
 SetType="train"
-InputFileList="../../HMDBTrainTestlist/trainlist"$TTSet".txt"
+InputFileList="./HMDB_trainlist"$TTSet".txt"
 else if [ $SetType = "test" ] || [ $SetType = "Test" ];
 then
 SetType="test"
-InputFileList="../../HMDBTrainTestlist/testlist"$TTSet".txt"
+InputFileList="./HMDB_testlist"$TTSet".txt"
 else
 echo "$SetType is not recognized as set type. It must be train or test"
 exit 1
@@ -139,13 +142,13 @@ then
 
 #%%%%%%%%%% Transcoding FileName from .avi to .yuv and store the output yuv file in ./vid/"
 cd JM_MVX_NoTexture/bin
-if [ ! -e "../../../../HMDB/$AbsFileName" ] ; then
-echo "../../../../HMDB/$AbsFileName" "doesn't exit"
+if [ ! -e "$PathSourceVid$AbsFileName" ] ; then
+echo "$PathSourceVid$AbsFileName" "doesn't exit"
 break
 fi
 
 rm ./vid/JMInputVideo.yuv
-ffmpeg -loglevel panic -i '../../../../HMDB/'$AbsFileName -vf scale=320:240 -vcodec rawvideo -pix_fmt yuv420p './vid/JMInputVideo.yuv' > /dev/null
+ffmpeg -loglevel panic -i $PathSourceVid$AbsFileName -vf scale=320:240 -vcodec rawvideo -pix_fmt yuv420p './vid/JMInputVideo.yuv' > /dev/null
 cp -f ./vid/JMInputVideo.yuv ../../JM_MVX/bin/vid/ > /dev/null
 
 

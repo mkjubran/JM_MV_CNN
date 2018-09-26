@@ -1,8 +1,0 @@
-#!/bin/bash
-clear
-P=/data0/Mohd_ALL_JM_MV_CNN/JMMV_Options/JM_HMDB_QP30_MVSR16_MVRes8_A/JMMV_HMDB_Test01_QP30_MVSR16_MVRes8_A
-echo $P
-python ./convert_HMDB_bin.py --data_dir=$P --out_dir=$P'_Conv' --path_to_file_list=./HMDB_testlist01.txt --prefix=JMMV_
-cd $P'_Conv'
-find . -name '*.bin' -exec bash -c ' mv $0 ${0/\JMMV/rgb24}' {} \;
-cd /data0/Mohd_ALL_JM_MV_CNN/JM_MV_CNN_Options/JM_MV_CNN

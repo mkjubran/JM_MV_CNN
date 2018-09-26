@@ -57,21 +57,11 @@ fi
 cd ./JM_MV_CNN$i
 if [ $VideoSet = "UCF" ]
 then
-   if [ $ColorSpace = "420P" ]
-   then
      ./GenerateAndComputeSizeRatio-UCF-Split-1 -ecfg=$enc_cfg -qp=$QPISlice -sr=$SearchRange -res=$mbmapXxX -settype=$SetType -sset=$TTSet -ifvid=$cnt -nvid=$Inc -ow=$Overwrite -strcom=$StrComment &
-   else
-     ./GenerateAndComputeSizeRatio-UCF-Split-1-444P -ecfg=$enc_cfg -qp=$QPISlice -sr=$SearchRange -res=$mbmapXxX -settype=$SetType -sset=$TTSet -ifvid=$cnt -nvid=$Inc -ow=$Overwrite -strcom=$StrComment &
-   fi
 else
 if [ $VideoSet = "HMDB" ]
 then
-   if [ $ColorSpace = "420P" ]
-   then
      ./GenerateAndComputeSizeRatio-HMDB-Split-1 -ecfg=$enc_cfg -qp=$QPISlice -sr=$SearchRange -res=$mbmapXxX -settype=$SetType -sset=$TTSet -ifvid=$cnt -nvid=$Inc -ow=$Overwrite -strcom=$StrComment &
-   else
-     ./GenerateAndComputeSizeRatio-HMDB-Split-1-444P -ecfg=$enc_cfg -qp=$QPISlice -sr=$SearchRange -res=$mbmapXxX -settype=$SetType -sset=$TTSet -ifvid=$cnt -nvid=$Inc -ow=$Overwrite -strcom=$StrComment &
-   fi
 else
  echo "Video Set is undefined"
  fi
